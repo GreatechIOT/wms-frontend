@@ -1,0 +1,9 @@
+#reactSchedulerOutsideWrapper {
+    margin-left: 92px !important;
+}
+
+@media (max-width: 990px) {
+    #reactSchedulerOutsideWrapper {
+        margin-left: 0 !important;
+    }
+}
