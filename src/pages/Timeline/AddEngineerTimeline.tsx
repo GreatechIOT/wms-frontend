@@ -5,15 +5,15 @@ import TimelineService from 'services/TimelineService';
 import { callApi } from 'utilities/Function/CallAPI';
 import { useNavigate } from 'react-router-dom';
 import { MemberType } from 'utilities/Interface/MemberInterface';
-import { showErrorToast } from 'utilities/Function/CustomToast';
+import { showErrorToast, showSuccessToast } from 'utilities/Function/CustomToast';
 
 const AddEngineerTimeline = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const timelineService = new TimelineService();
     const navigate = useNavigate();
     const initialValues: TimelineType = {
-        project_category: { id: 0, category_type: '' },
-        project_id: { id: 0, item_name: '', item_description: '' },
+        project_category: '',
+        project_id: '',
         members: '',
         timeline: null
     };
@@ -40,8 +40,8 @@ const AddEngineerTimeline = () => {
             { user_id: userIdArray, date_range: values.timeline, item_id: values.project_id.id }
         ).then((res: any) => {
             if (res && res?.status) {
-                console.log(res.data)
-               
+                showSuccessToast(res?.message);
+                navigate('/EngineerTimelineListing');
             } else {
                 if (!res.showError) {
                     showErrorToast(res?.message);

@@ -11,6 +11,9 @@ import FormError from '../../utilities/Form/FormError';
 import { getToken } from '../../utilities/Function/GetLocalStorage';
 import { useNavigate } from 'react-router-dom';
 import { DOCUMENT_TITLE } from 'utilities/Constant/DocumentTitleName';
+import { TabMenu } from 'primereact/tabmenu';
+import { MenuItem } from 'primereact/menuitem';
+import { GrUserManager } from 'react-icons/gr';
 
 type TargetType = {
     employee_id: string;
@@ -20,9 +23,15 @@ type TargetType = {
 };
 
 const Profile = () => {
-    document.title = DOCUMENT_TITLE.Profile;
+    // document.title = DocumentTitle.PROFILE;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [activeIndex, setActiveIndex] = useState<number>(0);
+    const [userDetail, setUserDetail] = useState<any>();
+    const profile_items: MenuItem[] = [
+        { label: 'My Profile', icon: 'pi pi-fw pi-user' },
+        { label: 'Change Password', icon: 'pi pi-fw pi-lock' }
+    ];
     const [initials, setInitials] = useState({
         employee_id: '',
         username: '',
@@ -79,7 +88,6 @@ const Profile = () => {
                         values = { ...values, user_id: getUserID };
 
                         const data = {
-                            token: getToken(),
                             values
                         };
                     }
@@ -100,9 +108,9 @@ const Profile = () => {
             confirm_password: ''
         },
         validationSchema: Yup.object({
-            old_password: Yup.string().required('Required'),
-            new_password: Yup.string().required('Required'),
-            confirm_password: Yup.string().required('Required')
+            old_password: Yup.string().required('Old Password is required'),
+            new_password: Yup.string().required('New Password is required'),
+            confirm_password: Yup.string().required('Confirm Password is required')
         }),
         onSubmit: (values) => {
             setLoading(true);
@@ -117,10 +125,29 @@ const Profile = () => {
                         setLoading(false);
                     } else {
                         const data = {
-                            token: getToken(),
                             old_password: values.old_password,
                             new_password: values.new_password
                         };
+                        let apiFunc = userService.changePassword;
+                        callApi(
+                            {
+                                apiFunc,
+                                setLoading,
+                                navigateToLogin: () => {
+                                    navigate('/login');
+                                }
+                            },
+                            data
+                        ).then((res) => {
+                            if (res && res?.status) {
+                                showSuccessToast(res?.message);
+                                formikChangePassword.resetForm();
+                            } else {
+                                if (!res.showError) {
+                                    showErrorToast(res?.message);
+                                }
+                            }
+                        });
                     }
                 },
                 reject: () => {
@@ -132,136 +159,186 @@ const Profile = () => {
         }
     });
 
+    useEffect(() => {
+        setLoading(true);
+
+        const data = {
+            user_id: getToken()?.split('@')[1]
+        };
+
+        let apiFunc = userService.getOneUser;
+
+        callApi(
+            {
+                apiFunc,
+                setLoading,
+                navigateToLogin: () => {
+                    navigate('/login');
+                }
+            },
+            data
+        ).then((res) => {
+            if (res && res?.status) {
+                setUserDetail(res.data);
+            } else {
+                if (!res.showError) {
+                    showErrorToast(res?.message);
+                }
+            }
+        });
+    }, []);
+
     return (
         <div>
             <ConfirmDialog />
 
             <div>
                 <>
-                    <div className="card mb-5">
-                        <form className="mt-2" onSubmit={formikChangeProfile.handleSubmit}>
-                            <div className="grid p-fluid">
-                                <div className="col-12 sm:col-12 md:col-12">
-                                    <label>Employee ID</label>
-                                    <div className="p-inputgroup mt-2">
-                                        <span className="p-inputgroup-addon">
-                                            <i className="pi pi-tag"></i>
+                    <TabMenu model={profile_items} activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)} />
+                    {activeIndex === 0 && (
+                        <div className="card">
+                            <div className="grid mb-5">
+                                <div className="col-12 md:col-4 mb-5">
+                                    <div className="flex flex-column align-items-center">
+                                        <span className="inline-flex align-items-center justify-content-center border-circle w-5rem h-5rem bg-blue-100 mb-5">
+                                            <i className="pi pi pi-user text-4xl text-primary-700"></i>
                                         </span>
-                                        <InputText
-                                            id="employee_id"
-                                            name="employee_id"
-                                            placeholder="Employee ID"
-                                            onChange={formikChangeProfile.handleChange}
-                                            onBlur={formikChangeProfile.handleBlur}
-                                            value={formikChangeProfile.values.employee_id}
-                                            disabled={loading}
-                                        />
+                                        <div className="text-2xl mb-3 font-medium">Name</div>
+                                        <div>{userDetail?.name}</div>
                                     </div>
-                                    <FormError touched={formikChangeProfile.touched.employee_id} errors={formikChangeProfile.errors.employee_id} />
                                 </div>
-
-                                <div className="col-12 sm:col-12 md:col-12">
-                                    <label>Username</label>
-                                    <div className="p-inputgroup mt-2">
-                                        <span className="p-inputgroup-addon">
-                                            <i className="pi pi-user"></i>
+                                <div className="col-12 md:col-4 mb-5">
+                                    <div className="flex flex-column align-items-center">
+                                        <span className="inline-flex align-items-center justify-content-center border-circle w-5rem h-5rem bg-blue-100 mb-5">
+                                            <i className="pi pi-envelope text-4xl text-primary-700"></i>
                                         </span>
-                                        <InputText
-                                            id="username"
-                                            name="username"
-                                            placeholder="Username"
-                                            onChange={formikChangeProfile.handleChange}
-                                            onBlur={formikChangeProfile.handleBlur}
-                                            value={formikChangeProfile.values.username}
-                                            disabled={loading}
-                                        />
+                                        <div className="text-2xl mb-3 font-medium">Email</div>
+                                        <div>{userDetail?.email}</div>
                                     </div>
-                                    <FormError touched={formikChangeProfile.touched.username} errors={formikChangeProfile.errors.username} />
                                 </div>
-
-                                <div className="col-12 sm:col-12 md:col-12">
-                                    <label>Email </label>
-                                    <div className="p-inputgroup mt-2">
-                                        <span className="p-inputgroup-addon">
-                                            <i className="pi pi-envelope"></i>
+                                <div className="col-12 md:col-4 mb-5">
+                                    <div className="flex flex-column align-items-center">
+                                        <span className="inline-flex align-items-center justify-content-center border-circle w-5rem h-5rem bg-blue-100 mb-5">
+                                            <i className="pi pi-id-card text-4xl text-primary-700"></i>
                                         </span>
-                                        <InputText id="email" name="email" placeholder="Email" onChange={formikChangeProfile.handleChange} onBlur={formikChangeProfile.handleBlur} value={formikChangeProfile.values.email} disabled={loading} />
+                                        <div className="text-2xl mb-3 font-medium">Employee ID</div>
+                                        <div>{userDetail?.employee_id}</div>
                                     </div>
-                                    <FormError touched={formikChangeProfile.touched.email} errors={formikChangeProfile.errors.email} />
                                 </div>
-
-                                <SubmitFormButton label="Change" loading={loading} />
+                                <div className="col-12 md:col-4 mb-5">
+                                    <div className="flex flex-column align-items-center">
+                                        <span className="inline-flex align-items-center justify-content-center border-circle w-5rem h-5rem bg-blue-100 mb-5">
+                                            <i className="pi pi-building text-4xl text-primary-700"></i>
+                                        </span>
+                                        <div className="text-2xl mb-3 font-medium">Department</div>
+                                        <div>{userDetail?.department}</div>
+                                    </div>
+                                </div>
+                                <div className="col-12 md:col-4 mb-5">
+                                    <div className="flex flex-column align-items-center">
+                                        <span className="inline-flex align-items-center justify-content-center border-circle w-5rem h-5rem bg-blue-100 mb-5">
+                                            <i className="pi pi-sitemap text-4xl text-primary-700"></i>
+                                        </span>
+                                        <div className="text-2xl mb-3 font-medium">Job Title</div>
+                                        <div>{userDetail?.job_title}</div>
+                                    </div>
+                                </div>
+                                <div className="col-12 md:col-4 mb-5">
+                                    <div className="flex flex-column align-items-center">
+                                        <span className="inline-flex align-items-center justify-content-center border-circle w-5rem h-5rem bg-blue-100 mb-5">
+                                            <i className="pi pi-briefcase text-4xl text-primary-700"> </i>
+                                        </span>
+                                        <div className="text-2xl mb-3 font-medium">Section</div>
+                                        <div>{userDetail?.section}</div>
+                                    </div>
+                                </div>
+                                <div className="col-12 md:col-12 mb-5 text-center">
+                                    <div className="flex flex-column align-items-center">
+                                        <span className="inline-flex align-items-center justify-content-center border-circle w-5rem h-5rem bg-blue-100 mb-5">
+                                            <i className=" text-4xl text-primary-700">
+                                                <GrUserManager />
+                                            </i>
+                                        </span>
+                                        <div className="text-2xl mb-3 font-medium">Superior</div>
+                                        <div>{userDetail?.superior?.name}</div>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    )}
 
-                    <div className="card mt-5">
-                        <form className="mt-2" onSubmit={formikChangePassword.handleSubmit}>
-                            <div className="grid p-fluid">
-                                <div className="col-12 sm:col-12 md:col-12">
-                                    <label>Old Password </label>
-                                    <div className="p-inputgroup mt-2">
-                                        <span className="p-inputgroup-addon">
-                                            <i className="pi pi-key"></i>
-                                        </span>
-                                        <InputText
-                                            id="old_password"
-                                            name="old_password"
-                                            type="password"
-                                            placeholder="Old Password"
-                                            onChange={formikChangePassword.handleChange}
-                                            onBlur={formikChangePassword.handleBlur}
-                                            value={formikChangePassword.values.old_password}
-                                            disabled={loading}
-                                        />
+                    {activeIndex === 1 && (
+                        <div className="card">
+                            <form className="mt-2" onSubmit={formikChangePassword.handleSubmit}>
+                                <div className="grid p-fluid">
+                                    <div className="col-12 sm:col-12 md:col-12">
+                                        <label>Old Password </label>
+                                        <div className="p-inputgroup mt-2">
+                                            <span className="p-inputgroup-addon">
+                                                <i className="pi pi-key"></i>
+                                            </span>
+                                            <InputText
+                                                style={{ background: 'white', border: '1px solid #ccc' }}
+                                                id="old_password"
+                                                name="old_password"
+                                                type="password"
+                                                placeholder="Old Password"
+                                                onChange={formikChangePassword.handleChange}
+                                                onBlur={formikChangePassword.handleBlur}
+                                                value={formikChangePassword.values.old_password}
+                                                disabled={loading}
+                                            />
+                                        </div>
+                                        <FormError touched={formikChangePassword.touched.old_password} errors={formikChangePassword.errors.old_password} />
                                     </div>
-                                    <FormError touched={formikChangePassword.touched.old_password} errors={formikChangePassword.errors.old_password} />
-                                </div>
 
-                                <div className="col-12 sm:col-12 md:col-12">
-                                    <label>New Password </label>
-                                    <div className="p-inputgroup mt-2">
-                                        <span className="p-inputgroup-addon">
-                                            <i className="pi pi-key"></i>
-                                        </span>
-                                        <InputText
-                                            id="new_password"
-                                            name="new_password"
-                                            type="password"
-                                            placeholder="Password"
-                                            onChange={formikChangePassword.handleChange}
-                                            onBlur={formikChangePassword.handleBlur}
-                                            value={formikChangePassword.values.new_password}
-                                            disabled={loading}
-                                        />
+                                    <div className="col-12 sm:col-12 md:col-12">
+                                        <label>New Password </label>
+                                        <div className="p-inputgroup mt-2">
+                                            <span className="p-inputgroup-addon">
+                                                <i className="pi pi-key"></i>
+                                            </span>
+                                            <InputText
+                                                style={{ background: 'white', border: '1px solid #ccc' }}
+                                                id="new_password"
+                                                name="new_password"
+                                                type="password"
+                                                placeholder="Password"
+                                                onChange={formikChangePassword.handleChange}
+                                                onBlur={formikChangePassword.handleBlur}
+                                                value={formikChangePassword.values.new_password}
+                                                disabled={loading}
+                                            />
+                                        </div>
+                                        <FormError touched={formikChangePassword.touched.new_password} errors={formikChangePassword.errors.new_password} />
                                     </div>
-                                    <FormError touched={formikChangePassword.touched.new_password} errors={formikChangePassword.errors.new_password} />
-                                </div>
 
-                                <div className="col-12 sm:col-12 md:col-12">
-                                    <label>Confirm Password </label>
-                                    <div className="p-inputgroup mt-2">
-                                        <span className="p-inputgroup-addon">
-                                            <i className="pi pi-key"></i>
-                                        </span>
-                                        <InputText
-                                            id="confirm_password"
-                                            name="confirm_password"
-                                            type="password"
-                                            placeholder="Confirm Password"
-                                            onChange={formikChangePassword.handleChange}
-                                            onBlur={formikChangePassword.handleBlur}
-                                            value={formikChangePassword.values.confirm_password}
-                                            disabled={loading}
-                                        />
+                                    <div className="col-12 sm:col-12 md:col-12">
+                                        <label>Confirm Password </label>
+                                        <div className="p-inputgroup mt-2">
+                                            <span className="p-inputgroup-addon">
+                                                <i className="pi pi-key"></i>
+                                            </span>
+                                            <InputText
+                                                style={{ background: 'white', border: '1px solid #ccc' }}
+                                                id="confirm_password"
+                                                name="confirm_password"
+                                                type="password"
+                                                placeholder="Confirm Password"
+                                                onChange={formikChangePassword.handleChange}
+                                                onBlur={formikChangePassword.handleBlur}
+                                                value={formikChangePassword.values.confirm_password}
+                                                disabled={loading}
+                                            />
+                                        </div>
+                                        <FormError touched={formikChangePassword.touched.confirm_password} errors={formikChangePassword.errors.confirm_password} />
                                     </div>
-                                    <FormError touched={formikChangePassword.touched.confirm_password} errors={formikChangePassword.errors.confirm_password} />
-                                </div>
 
-                                <SubmitFormButton label="Change" loading={loading} />
-                            </div>
-                        </form>
-                    </div>
+                                    <SubmitFormButton label="Change" loading={loading} />
+                                </div>
+                            </form>
+                        </div>
+                    )}
                 </>
             </div>
         </div>

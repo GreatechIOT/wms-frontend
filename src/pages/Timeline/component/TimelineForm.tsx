@@ -106,8 +106,8 @@ const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loadin
             {}
         ).then((res: any) => {
             if (res && res?.status) {
-                const newItemList = res.data.map(({ id, name, email, employee_id }: any) => ({ id, name, email, employee_id }));
-                setMemberOptions(newItemList);
+                // const newItemList = res.data.map(({ id, name, email, employee_id }: any) => ({ id, name, email, employee_id }));
+                // setMemberOptions(newItemList);
             } else {
                 if (!res.showError) {
                     showErrorToast(res?.message);

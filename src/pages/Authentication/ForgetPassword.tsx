@@ -7,7 +7,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import FormError from 'utilities/Form/FormError';
 import UserService from 'services/UserService';
-import { showErrorToast, showSuccessToast } from 'utilities/Function/CustomToast';
+import { showErrorToast, showSuccessToast } from '../../utilities/Function/CustomToast';
 import { ToastContainer } from 'react-toastify';
 import { callApi } from '../../utilities/Function/CallAPI';
 import { getToken } from '../../utilities/Function/GetLocalStorage';
@@ -33,18 +33,32 @@ export const ForgetPassword = (props: any) => {
         validationSchema: Yup.object({
             email: Yup.string().required('Required').email()
         }),
-        onSubmit: (values: any) => {
+        onSubmit: async (values: any) => {
+            const data = { email: values.email };
             let apiFunc = userService.forgetPassword;
 
-            callApi({ apiFunc, setLoading }, { email: values.email }).then((res: any) => {
-                if (res.status) {
+            try {
+                const res = await callApi(
+                    {
+                        apiFunc,
+                        setLoading,
+                        navigateToLogin: () => {
+                            navigate('/login');
+                        }
+                    },
+                    data
+                );
+
+                if (res?.status) {
+                    navigate('/login');
                     showSuccessToast(res.message);
-                    setTimeout(() => navigate('/login'), 3000);
                 } else {
-                    showErrorToast(res.message);
+                    console.log('False');
+                    showErrorToast(res?.message);
                 }
-            });
-            return;
+            } catch (error) {
+                console.error('Error in onSubmit:', error);
+            }
         }
     });
 

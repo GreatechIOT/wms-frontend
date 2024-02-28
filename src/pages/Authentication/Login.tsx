@@ -57,7 +57,7 @@ export const Login = (props: any) => {
                 
                 if (res?.status) {
                     localStorage.setItem('wms_token', res?.data.token + '@' + res?.data.id);
-                    navigate('/AddEngineerTimeline');
+                    navigate('/Dashboard');
                     showSuccessToast(res?.message + '.');
                 } else {
                     showErrorToast(res?.message);

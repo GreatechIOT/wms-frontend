@@ -43,4 +43,14 @@ export default class UserService {
         return axiosInstance.post(`${url}/getSubordinates`, values).then((res) => res.data);
     }
 
+   
+
+    getOneUser(values: any) {
+        return axiosInstance.post(`${url}/getOneUser`, values).then((res) => res.data);
+    }
+
+    changePassword(values: any) {
+        return axiosInstance.post(`${url}/changePassword`, values).then((res) => res.data);
+    }
+
 }

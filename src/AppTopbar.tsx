@@ -4,8 +4,10 @@ import AppMenu from './AppMenu';
 import { classNames } from 'primereact/utils';
 import logo from './assets/images/wmsLogo.png';
 import { clearLocalStorage } from 'utilities/Function/ClearLocalStorage';
+import { useUser } from 'utilities/Context/UserContext';
 
 const AppTopbar = (props: any) => {
+    const { userDetail } = useUser();
     const onTopbarSubItemClick = (event: any) => {
         event.preventDefault();
     };
@@ -50,12 +52,17 @@ const AppTopbar = (props: any) => {
                     <ul className="layout-topbar-right-items">
                         <li id="profile" className={classNames('profile-item', { 'active-topmenuitem': props.topbarMenuActive })}>
                             <button className="p-link" onClick={props.onTopbarItemClick}>
-                                <img src={`https://api.dicebear.com/7.x/initials/svg?seed=${'HQ'}`} alt="profile" style={{ width: '44px', height: '44px', borderRadius: '25px' }} />
+                                <img src={`https://api.dicebear.com/7.x/initials/svg?seed=${userDetail?.name}`} alt="profile" style={{ width: '44px', height: '44px', borderRadius: '25px' }} />
                             </button>
 
                             <ul className="fadeInDown">
                                 <li role="menuitem">
-                                    <button className="p-link" onClick={onTopbarSubItemClick}>
+                                    <button
+                                        className="p-link"
+                                        onClick={() => {
+                                            navigate('/profile');
+                                        }}
+                                    >
                                         <i className="pi pi-fw pi-user"></i>
                                         <span>Profile</span>
                                     </button>
@@ -74,20 +81,6 @@ const AppTopbar = (props: any) => {
                                 </li>
                             </ul>
                         </li>
-                        {/* <li>
-                            <button className="p-link">
-                                <i className="topbar-icon pi pi-fw pi-bell"></i>
-                                <span className="topbar-badge">2</span>
-                                <span className="topbar-item-name">Notifications</span>
-                            </button>
-                        </li>
-                        <li>
-                            <button className="p-link">
-                                <i className="topbar-icon pi pi-fw pi-comment"></i>
-                                <span className="topbar-badge">5</span>
-                                <span className="topbar-item-name">Messages</span>
-                            </button>
-                        </li> */}
                     </ul>
                 </div>
             </div>

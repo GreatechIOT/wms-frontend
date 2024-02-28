@@ -33,4 +33,7 @@ export default class TimelineService {
         return axiosInstance.post(`${url}/deleteTimeline`, values).then((res) => res.data);
     }
 
+    getSubordinatesTimeline(values: any) {
+        return axiosInstance.post(`${url}/getSubordinatesTimeline`, values).then((res) => res.data);
+    }
 }

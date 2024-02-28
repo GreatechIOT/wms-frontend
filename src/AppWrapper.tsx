@@ -5,6 +5,8 @@ import { Login } from './pages/Authentication/Login';
 import { Permission } from './pages/Authentication/Permission';
 import { ForgetPassword } from './pages/Authentication/ForgetPassword';
 import { ResetPassword } from './pages/Authentication/ResetPassword';
+import { ToastContainer } from 'react-toastify';
+import { UserProvider } from 'utilities/Context/UserContext';
 
 const AppWrapper = (props: any) => {
     const [colorScheme, setColorScheme] = useState('dark');
@@ -78,12 +80,22 @@ const AppWrapper = (props: any) => {
     };
 
     return (
-        <Routes>
-            <Route path="/login" element={<Login colorScheme={colorScheme} />} />
-            <Route path="/forgetPassword" element={<ForgetPassword colorScheme={colorScheme} />} />
-            <Route path="/resetPassword/:user_id/:token" element={<ResetPassword colorScheme={colorScheme} />} />
-            <Route path="*" element={<App colorScheme={colorScheme} onColorSchemeChange={onColorSchemeChange} componentTheme={componentTheme} onComponentThemeChange={onComponentThemeChange} theme={theme} onMenuThemeChange={onMenuThemeChange} />} />
-        </Routes>
+        <>
+            <ToastContainer />
+            <Routes>
+                <Route path="/login" element={<Login colorScheme={colorScheme} />} />
+                <Route path="/forgetPassword" element={<ForgetPassword colorScheme={colorScheme} />} />
+                <Route path="/resetPassword/:user_id/:token/Employee" element={<ResetPassword colorScheme={colorScheme} />} />
+                <Route
+                    path="*"
+                    element={
+                        <UserProvider>
+                            <App colorScheme={colorScheme} onColorSchemeChange={onColorSchemeChange} componentTheme={componentTheme} onComponentThemeChange={onComponentThemeChange} theme={theme} onMenuThemeChange={onMenuThemeChange} />
+                        </UserProvider>
+                    }
+                />
+            </Routes>
+        </>
     );
 };
 

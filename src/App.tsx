@@ -22,6 +22,7 @@ import { RiTimeLine } from 'react-icons/ri';
 import AddEngineerTimeline from 'pages/Timeline/AddEngineerTimeline';
 import EngineerTimelineListing from 'pages/Timeline/EngineerTimelineListing';
 import Dashboard from 'pages/Dashboard/Dashboard';
+import Profile from 'pages/Authentication/Profile';
 
 const App = (props: any) => {
     const [rightMenuActive, setRightMenuActive] = useState(false);
@@ -78,7 +79,8 @@ const App = (props: any) => {
         { parent: 'Dashboard', label: 'Dashboard', parent_url: 'Dashboard', label_url: 'Dashboard' },
         { parent: 'Engineer Timeline Listing', label: 'Add Engineer Timeline', parent_url: 'EngineerTimelineListing', label_url: 'AddEngineerTimeline' },
         { parent: 'Engineer Timeline Listing', label: 'Edit Engineer Timeline', parent_url: 'EngineerTimelineListing', label_url: 'EditEngineerTimeline' },
-        { parent: 'Engineer Timeline Listing', label: 'Engineer Timeline Listing', parent_url: 'EngineerTimelineListing', label_url: 'EngineerTimelineListing' }
+        { parent: 'Engineer Timeline Listing', label: 'Engineer Timeline Listing', parent_url: 'EngineerTimelineListing', label_url: 'EngineerTimelineListing' },
+        { parent: 'Dashboard', label: 'Profile', parent_url: 'Dashboard', label_url: 'Profile' },
     ];
 
     let rightMenuClick: any;
@@ -355,6 +357,7 @@ const App = (props: any) => {
                         <Route path="/Dashboard" element={<Dashboard />} />
                         <Route path="/AddEngineerTimeline" element={<AddEngineerTimeline />} />
                         <Route path="/EngineerTimelineListing" element={<EngineerTimelineListing />} />
+                        <Route path="/profile" element={<Profile />}  />
                     </Routes>
                 </div>
 
