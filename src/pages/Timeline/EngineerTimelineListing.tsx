@@ -10,13 +10,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TimelineService from 'services/TimelineService';
 import { callApi } from 'utilities/Function/CallAPI';
-import { showErrorToast } from 'utilities/Function/CustomToast';
+import { showErrorToast, showSuccessToast } from 'utilities/Function/CustomToast';
 import { onGlobalFilterChange, renderHeader } from 'utilities/Function/DataTableKeywordSearch';
 import { TabMenu } from 'primereact/tabmenu';
 import { Dropdown } from 'primereact/dropdown';
 import { MultiSelect } from 'primereact/multiselect';
 import CategoryService from 'services/CategoryService';
 import { CategoryType } from 'utilities/Interface/CategoryInterface';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
 const EngineerTimelineListing = () => {
     const [globalFilterValue, setGlobalFilterValue] = useState<string>('');
@@ -24,13 +25,13 @@ const EngineerTimelineListing = () => {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
         'item.category.category_type': { value: null, matchMode: FilterMatchMode.IN }
     });
-    const [selectedCategory, setSelectedCategory] = useState<any>(null);
+    const [selectedTimeline, setSelectedTimeline] = useState<any>(null);
     const menuAction = useRef<Menu>(null);
     const navigate = useNavigate();
     const [loading, setLoading] = useState<boolean>(false);
     const [timelineList, setTimelineList] = useState<any>([]);
     const [filteredTimelineList, setFilteredTimelineList] = useState<any>([]);
-    const [categoryOptions, setCategoryOptions] = useState<CategoryType[] | []>([]);
+    const [categoryOptions, setCategoryOptions] = useState<string[] | []>([]);
     const timelineService = new TimelineService();
     const categoryService = new CategoryService();
 
@@ -48,7 +49,9 @@ const EngineerTimelineListing = () => {
             {}
         ).then((res: any) => {
             if (res && res?.status) {
-                const newCategoryList = res.data.map(({ id, category_type }: any) => ({ id, category_type }));
+                let newCategoryList: string[] = [];
+                res.data.map((item: any) => newCategoryList.push(item.category_type));
+                //const newCategoryList = res.data.map(({ id, category_type }: any) => ({ id, category_type }));
                 setCategoryOptions(newCategoryList);
             } else {
                 if (!res.showError) {
@@ -100,38 +103,38 @@ const EngineerTimelineListing = () => {
             label: 'Deactivate',
             icon: 'pi pi-trash',
             command: (e) => {
-                // confirmDialog({
-                //     header: 'Confirmation',
-                //     message: 'Are you sure you want to deactivate this category?',
-                //     icon: 'pi pi-exclamation-triangle',
-                //     accept: () => {
-                //         setLoading(true);
-                //         const data = {
-                //             category_id: selectedCategory?.id
-                //         };
-                //         let apiFunc = categoryService.deactivateCategory;
-                //         callApi(
-                //             {
-                //                 apiFunc,
-                //                 setLoading,
-                //                 navigateToLogin: () => {
-                //                     navigate('/login');
-                //                 }
-                //             },
-                //             data
-                //         ).then((res) => {
-                //             if (res && res?.status) {
-                //                 showSuccessToast(res.message);
-                //                 getActiveAndDeactiveCategory();
-                //             } else {
-                //                 if (!res.showError) {
-                //                     showErrorToast(res?.message);
-                //                 }
-                //             }
-                //         });
-                //     },
-                //     reject: () => {}
-                // });
+                confirmDialog({
+                    header: 'Confirmation',
+                    message: 'Are you sure you want to deactivate this timeline?',
+                    icon: 'pi pi-exclamation-triangle',
+                    accept: () => {
+                        setLoading(true);
+                        const data = {
+                            timeline_id: selectedTimeline?.id
+                        };
+                        let apiFunc = timelineService.deleteTimeline;
+                        callApi(
+                            {
+                                apiFunc,
+                                setLoading,
+                                navigateToLogin: () => {
+                                    navigate('/login');
+                                }
+                            },
+                            data
+                        ).then((res) => {
+                            if (res && res?.status) {
+                                showSuccessToast(res.message);
+                                getSubordinatesTimeline();
+                            } else {
+                                if (!res.showError) {
+                                    showErrorToast(res?.message);
+                                }
+                            }
+                        });
+                    },
+                    reject: () => {}
+                });
             }
         }
     ];
@@ -143,7 +146,7 @@ const EngineerTimelineListing = () => {
                     className="p-button-text"
                     icon="pi pi-ellipsis-h"
                     onClick={(event) => {
-                        setSelectedCategory(e);
+                        setSelectedTimeline(e);
                         menuAction?.current?.toggle(event);
                     }}
                     aria-controls="popup_menu"
@@ -178,10 +181,11 @@ const EngineerTimelineListing = () => {
 
     const categoryFilterTemplate = (options: any) => {
         console.log(options);
-        return <MultiSelect value={options.value} options={categoryOptions} optionLabel="category_type" onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />;
+        return <MultiSelect value={options.value} options={categoryOptions} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />;
     };
     return (
         <React.Fragment>
+            <ConfirmDialog />
             <div className="grid">
                 <div className="col-12">
                     <div className="card">
