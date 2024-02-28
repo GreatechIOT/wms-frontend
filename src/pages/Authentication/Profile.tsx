@@ -198,7 +198,7 @@ const Profile = () => {
                     {activeIndex === 0 && (
                         <div className="card">
                             <div className="grid mb-5">
-                                <div className="col-12 md:col-4 mb-5">
+                                <div className="col-12 md:col-3 mb-5">
                                     <div className="flex flex-column align-items-center">
                                         <span className="inline-flex align-items-center justify-content-center border-circle w-5rem h-5rem bg-blue-100 mb-5">
                                             <i className="pi pi pi-user text-4xl text-primary-700"></i>
@@ -207,7 +207,7 @@ const Profile = () => {
                                         <div>{userDetail?.name}</div>
                                     </div>
                                 </div>
-                                <div className="col-12 md:col-4 mb-5">
+                                <div className="col-12 md:col-3 mb-5">
                                     <div className="flex flex-column align-items-center">
                                         <span className="inline-flex align-items-center justify-content-center border-circle w-5rem h-5rem bg-blue-100 mb-5">
                                             <i className="pi pi-envelope text-4xl text-primary-700"></i>
@@ -216,7 +216,7 @@ const Profile = () => {
                                         <div>{userDetail?.email}</div>
                                     </div>
                                 </div>
-                                <div className="col-12 md:col-4 mb-5">
+                                <div className="col-12 md:col-3 mb-5">
                                     <div className="flex flex-column align-items-center">
                                         <span className="inline-flex align-items-center justify-content-center border-circle w-5rem h-5rem bg-blue-100 mb-5">
                                             <i className="pi pi-id-card text-4xl text-primary-700"></i>
@@ -225,7 +225,7 @@ const Profile = () => {
                                         <div>{userDetail?.employee_id}</div>
                                     </div>
                                 </div>
-                                <div className="col-12 md:col-4 mb-5">
+                                <div className="col-12 md:col-3 mb-5">
                                     <div className="flex flex-column align-items-center">
                                         <span className="inline-flex align-items-center justify-content-center border-circle w-5rem h-5rem bg-blue-100 mb-5">
                                             <i className="pi pi-building text-4xl text-primary-700"></i>
@@ -234,7 +234,7 @@ const Profile = () => {
                                         <div>{userDetail?.department}</div>
                                     </div>
                                 </div>
-                                <div className="col-12 md:col-4 mb-5">
+                                <div className="col-12 md:col-3 mb-5">
                                     <div className="flex flex-column align-items-center">
                                         <span className="inline-flex align-items-center justify-content-center border-circle w-5rem h-5rem bg-blue-100 mb-5">
                                             <i className="pi pi-sitemap text-4xl text-primary-700"></i>
@@ -243,7 +243,7 @@ const Profile = () => {
                                         <div>{userDetail?.job_title}</div>
                                     </div>
                                 </div>
-                                <div className="col-12 md:col-4 mb-5">
+                                <div className="col-12 md:col-3 mb-5">
                                     <div className="flex flex-column align-items-center">
                                         <span className="inline-flex align-items-center justify-content-center border-circle w-5rem h-5rem bg-blue-100 mb-5">
                                             <i className="pi pi-briefcase text-4xl text-primary-700"> </i>
@@ -252,7 +252,7 @@ const Profile = () => {
                                         <div>{userDetail?.section}</div>
                                     </div>
                                 </div>
-                                <div className="col-12 md:col-12 mb-5 text-center">
+                                <div className="col-12 md:col-3 mb-5 text-center">
                                     <div className="flex flex-column align-items-center">
                                         <span className="inline-flex align-items-center justify-content-center border-circle w-5rem h-5rem bg-blue-100 mb-5">
                                             <i className=" text-4xl text-primary-700">

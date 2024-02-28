@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { FilterMatchMode } from 'primereact/api';
+import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
@@ -13,11 +13,16 @@ import { callApi } from 'utilities/Function/CallAPI';
 import { showErrorToast } from 'utilities/Function/CustomToast';
 import { onGlobalFilterChange, renderHeader } from 'utilities/Function/DataTableKeywordSearch';
 import { TabMenu } from 'primereact/tabmenu';
+import { Dropdown } from 'primereact/dropdown';
+import { MultiSelect } from 'primereact/multiselect';
+import CategoryService from 'services/CategoryService';
+import { CategoryType } from 'utilities/Interface/CategoryInterface';
 
 const EngineerTimelineListing = () => {
     const [globalFilterValue, setGlobalFilterValue] = useState<string>('');
     const [filters, setFilters] = useState({
-        global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+        'item.category.category_type': { value: null, matchMode: FilterMatchMode.IN }
     });
     const [selectedCategory, setSelectedCategory] = useState<any>(null);
     const menuAction = useRef<Menu>(null);
@@ -25,9 +30,35 @@ const EngineerTimelineListing = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [timelineList, setTimelineList] = useState<any>([]);
     const [filteredTimelineList, setFilteredTimelineList] = useState<any>([]);
+    const [categoryOptions, setCategoryOptions] = useState<CategoryType[] | []>([]);
     const timelineService = new TimelineService();
+    const categoryService = new CategoryService();
 
-    useEffect(() => {
+    const getActiveCategoryForItem = () => {
+        let apiFunc = categoryService.getActiveCategoryForItem;
+
+        callApi(
+            {
+                apiFunc,
+                setLoading,
+                navigateToLogin: () => {
+                    navigate('/login');
+                }
+            },
+            {}
+        ).then((res: any) => {
+            if (res && res?.status) {
+                const newCategoryList = res.data.map(({ id, category_type }: any) => ({ id, category_type }));
+                setCategoryOptions(newCategoryList);
+            } else {
+                if (!res.showError) {
+                    showErrorToast(res?.message);
+                }
+            }
+        });
+    };
+
+    const getSubordinatesTimeline = () => {
         let apiFunc = timelineService.getSubordinatesTimeline;
 
         callApi(
@@ -50,6 +81,11 @@ const EngineerTimelineListing = () => {
                 }
             }
         });
+    };
+
+    useEffect(() => {
+        getSubordinatesTimeline();
+        getActiveCategoryForItem();
     }, []);
 
     const actionItem: MenuItem[] = [
@@ -139,6 +175,11 @@ const EngineerTimelineListing = () => {
             return '--';
         }
     };
+
+    const categoryFilterTemplate = (options: any) => {
+        console.log(options);
+        return <MultiSelect value={options.value} options={categoryOptions} optionLabel="category_type" onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />;
+    };
     return (
         <React.Fragment>
             <div className="grid">
@@ -149,6 +190,7 @@ const EngineerTimelineListing = () => {
                                 header={renderHeader}
                                 paginator
                                 rows={10}
+                                //filterDisplay="row"
                                 filters={filters}
                                 onFilter={(e: any) => setFilters(e.filters)}
                                 value={timelineList}
@@ -156,14 +198,23 @@ const EngineerTimelineListing = () => {
                                 rowsPerPageOptions={[5, 10, 25]}
                                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} projects"
-                                emptyMessage="No category found."
+                                emptyMessage="No project found."
                                 loading={loading}
                             >
-                                <Column field="item.category.category_type" header="Project Category" />
+                                <Column
+                                    field="item.category.category_type"
+                                    header="Project Category"
+                                    filterField="item.category.category_type"
+                                    showFilterMatchModes={false}
+                                    filterMenuStyle={{ width: '14rem' }}
+                                    style={{ minWidth: '14rem' }}
+                                    filter
+                                    filterElement={categoryFilterTemplate}
+                                />
                                 <Column field="item.item_name" header="Project ID" />
                                 <Column field="item.item_description" header="Project Description" body={descriptionBodyTemplate} />
                                 <Column field="user.name" header="Member" />
-                                <Column field="timeline" body={timelineBodyTemplate} header="Timeline"/>
+                                <Column field="end_date" body={timelineBodyTemplate} header="Timeline" sortable />
                                 <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
                             </DataTable>
                         </div>
