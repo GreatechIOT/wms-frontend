@@ -99,7 +99,7 @@ const EngineerTimelineListing = () => {
             }
         },
         {
-            label: 'Deactivate',
+            label: 'Remove',
             icon: 'pi pi-trash',
             command: (e) => {
                 confirmDialog({
