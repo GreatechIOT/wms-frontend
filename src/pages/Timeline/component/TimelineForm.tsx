@@ -1,8 +1,9 @@
 import { useFormik } from 'formik';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
+import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CategoryService from 'services/CategoryService';
 import ItemService from 'services/ItemService';
@@ -22,8 +23,10 @@ interface TimelineProps {
     onSubmit: (values: TimelineType) => void;
     loading: boolean;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    isAddTimeline?: boolean;
+    category_id?: any;
 }
-const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loading, setLoading }) => {
+const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loading, setLoading, isAddTimeline, category_id }) => {
     const categoryService = new CategoryService();
     const itemService = new ItemService();
     const userService = new UserService();
@@ -106,8 +109,8 @@ const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loadin
             {}
         ).then((res: any) => {
             if (res && res?.status) {
-                // const newItemList = res.data.map(({ id, name, email, employee_id }: any) => ({ id, name, email, employee_id }));
-                // setMemberOptions(newItemList);
+                const newItemList = res.data.map(({ id, name, email, employee_id }: any) => ({ id, name, email, employee_id }));
+                setMemberOptions(newItemList);
             } else {
                 if (!res.showError) {
                     showErrorToast(res?.message);
@@ -163,6 +166,9 @@ const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loadin
 
         if (isMounted) {
             getActiveCategoryForItem();
+            if (!isAddTimeline) {
+                getItemByCategory(category_id);
+            }
             getSubordinates();
         }
 
@@ -172,125 +178,125 @@ const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loadin
     }, []);
 
     return (
-        <div className="card">
-            <div className="card-body">
-                <form onSubmit={formik.handleSubmit}>
-                    <div className="grid p-fluid">
-                        <div className="col-12 sm:col-12 md:col-12">
-                            <label className="flex">
-                                Project Category
-                                <div className="font-semibold -mt-1" style={{ color: 'red' }}>
-                                    *
+        <React.Fragment>
+            <div className="card">
+                <div className="card-body">
+                    <form onSubmit={formik.handleSubmit}>
+                        <div className="grid p-fluid">
+                            <div className="col-12 sm:col-12 md:col-12">
+                                <label className="flex">
+                                    Project Category
+                                    <div className="font-semibold -mt-1" style={{ color: 'red' }}>
+                                        *
+                                    </div>
+                                </label>
+                                <div className="p-inputgroup mt-2">
+                                    <Dropdown
+                                        style={{ background: 'white', border: '1px solid #ccc' }}
+                                        id="project_category"
+                                        name="project_category"
+                                        optionLabel="category_type"
+                                        options={categoryOptions}
+                                        onChange={(e) => {
+                                            formik.setFieldValue('project_id', '');
+                                            formik.handleChange(e);
+                                            getItemByCategory(e.value.id);
+                                        }}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.project_category}
+                                        placeholder="Select a Project Category"
+                                        disabled={loading}
+                                        filter
+                                    />
                                 </div>
-                            </label>
-                            <div className="p-inputgroup mt-2">
-                                <Dropdown
-                                    style={{ background: 'white', border: '1px solid #ccc' }}
-                                    id="project_category"
-                                    name="project_category"
-                                    optionLabel="category_type"
-                                    options={categoryOptions}
-                                    onChange={(e) => {
-                                        formik.setFieldValue('project_id', '');
-                                        formik.handleChange(e);
-                                        getItemByCategory(e.value.id);
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.project_category}
-                                    placeholder="Select a Project Category"
-                                    disabled={loading}
-                                    filter
-                                />
+                                <FormError touched={formik.touched.project_category} errors={formik.errors.project_category} />
                             </div>
-                            <FormError touched={formik.touched.project_category} errors={formik.errors.project_category} />
-                        </div>
+                            <div className="col-12 sm:col-12 md:col-12">
+                                <label className="flex">
+                                    Project ID
+                                    <div className="font-semibold -mt-1" style={{ color: 'red' }}>
+                                        *
+                                    </div>
+                                </label>
+                                <div className="p-inputgroup mt-2">
+                                    <Dropdown
+                                        style={{ background: 'white', border: '1px solid #ccc' }}
+                                        id="project_id"
+                                        name="project_id"
+                                        optionLabel="item_name"
+                                        options={itemOptions}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.project_id}
+                                        placeholder="Select a Project ID"
+                                        disabled={loading}
+                                        itemTemplate={itemDropdownTemplate}
+                                        filterBy="item_name,item_description"
+                                        filter
+                                    />
+                                </div>
+                                <FormError touched={formik.touched.project_id} errors={formik.errors.project_id} />
+                            </div>
+                            <div className="col-12 sm:col-12 md:col-12">
+                                <label className="flex">
+                                    Members
+                                    <div className="font-semibold -mt-1" style={{ color: 'red' }}>
+                                        *
+                                    </div>
+                                </label>
+                                <div className="p-inputgroup mt-2">
+                                    <MultiSelect
+                                        style={{ background: 'white', border: '1px solid #ccc' }}
+                                        id="members"
+                                        name="members"
+                                        options={memberOptions}
+                                        optionLabel="name"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.members}
+                                        itemTemplate={memberDropdownTemplate}
+                                        //panelFooterTemplate={panelFooterTemplate}
+                                        filter
+                                        filterBy="name,employee_id,email"
+                                        placeholder="Select Member"
+                                        maxSelectedLabels={3}
+                                        className="w-full md:w-20rem"
+                                        disabled={isAddTimeline ? loading : true}
+                                    />
+                                </div>
+                                <FormError touched={formik.touched.members} errors={formik.errors.members} />
+                            </div>
 
-                        <div className="col-12 sm:col-12 md:col-12">
-                            <label className="flex">
-                                Project ID
-                                <div className="font-semibold -mt-1" style={{ color: 'red' }}>
-                                    *
+                            <div className="col-12 sm:col-12 md:col-12">
+                                <label className="flex">
+                                    Timeline
+                                    <div className="font-semibold -mt-1" style={{ color: 'red' }}>
+                                        *
+                                    </div>
+                                </label>
+                                <div className="p-inputgroup mt-2">
+                                    <Calendar
+                                        style={{ background: 'white', border: '1px solid #ccc' }}
+                                        id="timeline"
+                                        name="timeline"
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        value={formik.values.timeline}
+                                        placeholder="Select Date Range"
+                                        disabled={loading}
+                                        selectionMode="range"
+                                        readOnlyInput
+                                        showButtonBar
+                                    />
                                 </div>
-                            </label>
-                            <div className="p-inputgroup mt-2">
-                                <Dropdown
-                                    style={{ background: 'white', border: '1px solid #ccc' }}
-                                    id="project_id"
-                                    name="project_id"
-                                    optionLabel="item_name"
-                                    options={itemOptions}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.project_id}
-                                    placeholder="Select a Project ID"
-                                    disabled={loading}
-                                    itemTemplate={itemDropdownTemplate}
-                                    filterBy="item_name,item_description"
-                                    filter
-                                />
+                                <FormError touched={formik.touched.timeline} errors={formik.errors.timeline} />
                             </div>
-                            <FormError touched={formik.touched.project_id} errors={formik.errors.project_id} />
+                            <SubmitFormButton label="Submit" loading={loading} />
                         </div>
-                        <div className="col-12 sm:col-12 md:col-12">
-                            <label className="flex">
-                                Members
-                                <div className="font-semibold -mt-1" style={{ color: 'red' }}>
-                                    *
-                                </div>
-                            </label>
-                            <div className="p-inputgroup mt-2">
-                                <MultiSelect
-                                    style={{ background: 'white', border: '1px solid #ccc' }}
-                                    id="members"
-                                    name="members"
-                                    options={memberOptions}
-                                    optionLabel="name"
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.members}
-                                    itemTemplate={memberDropdownTemplate}
-                                    //panelFooterTemplate={panelFooterTemplate}
-                                    filter
-                                    filterBy="item_name,item_description"
-                                    placeholder="Select Member"
-                                    maxSelectedLabels={3}
-                                    className="w-full md:w-20rem"
-                                    disabled={loading}
-                                />
-                            </div>
-                            <FormError touched={formik.touched.members} errors={formik.errors.members} />
-                        </div>
-
-                        <div className="col-12 sm:col-12 md:col-12">
-                            <label className="flex">
-                                Timeline
-                                <div className="font-semibold -mt-1" style={{ color: 'red' }}>
-                                    *
-                                </div>
-                            </label>
-                            <div className="p-inputgroup mt-2">
-                                <Calendar
-                                    style={{ background: 'white', border: '1px solid #ccc' }}
-                                    id="timeline"
-                                    name="timeline"
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={formik.values.timeline}
-                                    placeholder="Select Date Range"
-                                    disabled={loading}
-                                    selectionMode="range"
-                                    readOnlyInput
-                                    showButtonBar 
-                                />
-                            </div>
-                            <FormError touched={formik.touched.timeline} errors={formik.errors.timeline} />
-                        </div>
-
-                        <SubmitFormButton label="Submit" loading={loading} />
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+        </React.Fragment>
     );
 };
 

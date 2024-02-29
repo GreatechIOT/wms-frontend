@@ -11,6 +11,7 @@ const AddEngineerTimeline = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const timelineService = new TimelineService();
     const navigate = useNavigate();
+    const [isAddTimeline, setIsAddTimeline] = useState<boolean>(true);
     const initialValues: TimelineType = {
         project_category: '',
         project_id: '',
@@ -55,7 +56,7 @@ const AddEngineerTimeline = () => {
 
     return (
         <React.Fragment>
-            <TimelineForm initialValues={initialValues} onSubmit={onSubmit} loading={loading} setLoading={setLoading} />
+            <TimelineForm initialValues={initialValues} onSubmit={onSubmit} loading={loading} setLoading={setLoading} isAddTimeline={isAddTimeline} />
         </React.Fragment>
     );
 };

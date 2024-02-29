@@ -51,7 +51,6 @@ const EngineerTimelineListing = () => {
             if (res && res?.status) {
                 let newCategoryList: string[] = [];
                 res.data.map((item: any) => newCategoryList.push(item.category_type));
-                //const newCategoryList = res.data.map(({ id, category_type }: any) => ({ id, category_type }));
                 setCategoryOptions(newCategoryList);
             } else {
                 if (!res.showError) {
@@ -94,10 +93,10 @@ const EngineerTimelineListing = () => {
     const actionItem: MenuItem[] = [
         {
             label: 'Edit',
-            icon: 'pi pi-pencil'
-            // command: (e) => {
-            //     navigate('/EditCategory/' + selectedCategory?.id);
-            // }
+            icon: 'pi pi-pencil',
+            command: (e) => {
+                navigate('/EditEngineerTimeline/' + selectedTimeline?.id);
+            }
         },
         {
             label: 'Deactivate',

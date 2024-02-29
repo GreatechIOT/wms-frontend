@@ -37,6 +37,10 @@ export default class TimelineService {
         return axiosInstance.post(`${url}/getSubordinatesTimeline`, values).then((res) => res.data);
     }
 
+    getOneSubordinatesTimeline(values: any) {
+        return axiosInstance.post(`${url}/getOneSubordinatesTimeline`, values).then((res) => res.data);
+    }
+
     getAvailability(values: any) {
         return axiosInstance.post(`${url}/getAvailability`, values).then((res) => res.data);
     }
