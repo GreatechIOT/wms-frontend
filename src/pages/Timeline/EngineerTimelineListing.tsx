@@ -75,8 +75,8 @@ const EngineerTimelineListing = () => {
         ).then((res: any) => {
             console.log(res);
             if (res && res?.status) {
-                console.log(res.data1);
-                setTimelineList(res.data1);
+                console.log(res.data);
+                setTimelineList(res.data);
             } else {
                 if (!res.showError) {
                     showErrorToast(res?.message);

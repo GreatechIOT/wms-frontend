@@ -4,7 +4,8 @@ import { Bar, getDatasetAtEvent } from 'react-chartjs-2';
 import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js';
 import ChartDataZoom from 'chartjs-plugin-zoom';
 import { Dialog } from 'primereact/dialog';
-
+import { Calendar } from 'primereact/calendar';
+import { Nullable } from 'primereact/ts-helpers';
 const TMDashboard = () => {
     const [barChartData, setBarChartData] = useState<any>(null);
     const [barChartOptions, setBarChartOptions] = useState<any>(null);
@@ -13,7 +14,7 @@ const TMDashboard = () => {
     const [label, setLabel] = useState('');
     const [value, setValue] = useState('');
     const [workweek, setWorkweek] = useState('');
-
+    const [date, setDate] = useState<Nullable<Date>>(null);
     ChartJS.register(ChartDataZoom, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
     useEffect(() => {
         const documentStyle = getComputedStyle(document.documentElement);
@@ -75,7 +76,7 @@ const TMDashboard = () => {
             datasets: [
                 {
                     label: 'Project',
-                    backgroundColor:  'rgba(54, 162, 235, 0.8)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.8)',
                     // backgroundColor: documentStyle.getPropertyValue('--blue-500'),
                     // borderColor: documentStyle.getPropertyValue('--blue-500'),
                     data: [73, 28, 85, 100, 73, 7, 23, 79, 73, 47, 3, 76, 74, 21, 60, 17, 59, 73, 96, 12, 5, 78, 60, 48, 70, 74, 13, 79, 47, 71, 74, 94, 50, 90, 99, 44, 52, 38, 3, 74, 15, 98, 66, 80, 23, 60, 10, 33, 7, 81, 60, 23]
@@ -128,7 +129,24 @@ const TMDashboard = () => {
             </Dialog>
             <div className="grid">
                 <div className="col-12">
-                    <div className="card">{barChartData && barChartOptions && <Bar ref={chartRef} onClick={handleBarClick} options={barChartOptions} data={barChartData} />}</div>
+                    <div className="card">
+                        <div>
+                            <Calendar
+                                className="w-full md:w-15rem"
+                                style={{
+                                    backgroundColor: 'white',
+                                    borderBottom: '1px solid #ccc',
+                                    borderRadius: '4px',
+                                    outline: 'none'
+                                }}
+                                value={date}
+                                onChange={(e: any) => setDate(e.value)}
+                                view="year"
+                                dateFormat="yy"
+                            />
+                        </div>
+                        {barChartData && barChartOptions && <Bar ref={chartRef} onClick={handleBarClick} options={barChartOptions} data={barChartData} />}
+                    </div>
                 </div>
             </div>
         </React.Fragment>
