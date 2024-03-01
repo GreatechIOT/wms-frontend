@@ -32,6 +32,7 @@ const EngineerTimelineListing = () => {
     const [timelineList, setTimelineList] = useState<any>([]);
     const [filteredTimelineList, setFilteredTimelineList] = useState<any>([]);
     const [categoryOptions, setCategoryOptions] = useState<string[] | []>([]);
+    const [expandedRows, setExpandedRows] = useState([]);
     const timelineService = new TimelineService();
     const categoryService = new CategoryService();
 
@@ -160,7 +161,14 @@ const EngineerTimelineListing = () => {
             <div className="text-right">
                 <div className="p-input-icon-left w-full md:w-20rem">
                     <i className="pi pi-search " />
-                    <InputText style={{ background: 'white', border: '1px solid #ccc' }} className="w-full" value={globalFilterValue} onChange={(e) => onGlobalFilterChange(e, filters, setFilters, setGlobalFilterValue)} placeholder="Keyword Search" disabled={loading}/>
+                    <InputText
+                        style={{ background: 'white', border: '1px solid #ccc' }}
+                        className="w-full"
+                        value={globalFilterValue}
+                        onChange={(e) => onGlobalFilterChange(e, filters, setFilters, setGlobalFilterValue)}
+                        placeholder="Keyword Search"
+                        disabled={loading}
+                    />
                 </div>
             </div>
         );
@@ -184,11 +192,8 @@ const EngineerTimelineListing = () => {
     };
 
     const headerTemplate = (data: any) => {
-        return (
-            <div className='font-bold'>{data.user.name}</div>
-        )
-
-    }
+        return <span className="font-bold">{data.user.name}</span>;
+    };
 
     return (
         <React.Fragment>
@@ -213,11 +218,12 @@ const EngineerTimelineListing = () => {
                                 loading={loading}
                                 rowGroupMode="subheader"
                                 groupRowsBy="user.name"
+                                expandableRowGroups
                                 rowGroupHeaderTemplate={headerTemplate}
-                               // rowGroupMode="rowspan" groupRowsBy="representative.name"
-                                
+                                expandedRows={expandedRows}
+                                onRowToggle={(e: any) => setExpandedRows(e.data)}
+                                sortField="user.name"
                             >
-                                {/* <Column field="user.name" header="Member" /> */}
                                 <Column
                                     field="item.category.category_type"
                                     header="Project Category"
@@ -230,7 +236,7 @@ const EngineerTimelineListing = () => {
                                 />
                                 <Column field="item.item_name" header="Project ID" />
                                 <Column field="item.item_description" header="Project Description" body={descriptionBodyTemplate} />
-                                
+
                                 <Column field="end_date" body={timelineBodyTemplate} header="Timeline" sortable />
                                 <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
                             </DataTable>
