@@ -1,4 +1,6 @@
 import { useFormik } from 'formik';
+import moment from 'moment';
+import { addLocale } from 'primereact/api';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
@@ -177,6 +179,9 @@ const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loadin
         };
     }, []);
 
+    addLocale('es', {
+        firstDayOfWeek: 1
+    });
     return (
         <React.Fragment>
             <div className="card">
@@ -276,10 +281,20 @@ const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loadin
                                 </label>
                                 <div className="p-inputgroup mt-2">
                                     <Calendar
+                                        locale="es"
                                         style={{ background: 'white', border: '1px solid #ccc' }}
                                         id="timeline"
                                         name="timeline"
-                                        onChange={formik.handleChange}
+                                        onChange={(e: any) => {
+                                            console.log(e.value);
+                                            if (e.value) {
+                                                formik.setFieldValue('timeline', [e.value ? moment(e.value[0]).startOf('W').toDate() : null, e.value[1] ? moment(e.value[1]).endOf('W').toDate() : null]);
+                                                console.log(moment(e.value[0]).startOf('W').toDate());
+                                                console.log(moment(e.value[0]).endOf('W').toDate());
+                                            } else {
+                                                formik.setFieldValue('timeline', null);
+                                            }
+                                        }}
                                         onBlur={formik.handleBlur}
                                         value={formik.values.timeline}
                                         placeholder="Select Date Range"
@@ -287,6 +302,7 @@ const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loadin
                                         selectionMode="range"
                                         readOnlyInput
                                         showButtonBar
+                                        showWeek
                                     />
                                 </div>
                                 <FormError touched={formik.touched.timeline} errors={formik.errors.timeline} />

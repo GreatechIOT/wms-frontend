@@ -5,7 +5,7 @@ import TimelineService from 'services/TimelineService';
 import { callApi } from 'utilities/Function/CallAPI';
 import { useNavigate, useParams } from 'react-router-dom';
 import { showErrorToast, showSuccessToast } from 'utilities/Function/CustomToast';
-
+import moment from 'moment';
 const EditEngineerTimeline = () => {
     const selectedTimeline = useParams();
     const [loading, setLoading] = useState<boolean>(false);
@@ -72,7 +72,7 @@ const EditEngineerTimeline = () => {
                     navigate('/login');
                 }
             },
-            { timeline_id: selectedTimeline.id, date_range: values.timeline, item_id: values.project_id.id }
+            { timeline_id: selectedTimeline.id, date_range: [moment(values?.timeline?.[0]).format('YYYY-MM-DD'), moment(values?.timeline?.[1]).format('YYYY-MM-DD')], item_id: values.project_id.id }
         ).then((res: any) => {
             if (res && res?.status) {
                 showSuccessToast(res?.message);
