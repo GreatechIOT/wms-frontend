@@ -7,9 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import { MemberType } from 'utilities/Interface/MemberInterface';
 import { showErrorToast, showSuccessToast } from 'utilities/Function/CustomToast';
 import moment from 'moment';
+import { useUser } from 'utilities/Context/UserContext';
+import LoadingAnimation from 'utilities/Animation/LoadingAnimation';
+import { Access } from 'pages/LogFiles/Access';
 
 const AddEngineerTimeline = () => {
     const [loading, setLoading] = useState<boolean>(false);
+    const { privilege } = useUser();
     const timelineService = new TimelineService();
     const navigate = useNavigate();
     const [isAddTimeline, setIsAddTimeline] = useState<boolean>(true);
@@ -57,7 +61,7 @@ const AddEngineerTimeline = () => {
 
     return (
         <React.Fragment>
-            <TimelineForm initialValues={initialValues} onSubmit={onSubmit} loading={loading} setLoading={setLoading} isAddTimeline={isAddTimeline} />
+            {!privilege ? <LoadingAnimation /> : privilege && privilege?.add_timeline ? <TimelineForm initialValues={initialValues} onSubmit={onSubmit} loading={loading} setLoading={setLoading} isAddTimeline={isAddTimeline} /> : <Access />}
         </React.Fragment>
     );
 };

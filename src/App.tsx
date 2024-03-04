@@ -25,6 +25,9 @@ import Dashboard from 'pages/Dashboard/Dashboard';
 import Profile from 'pages/Authentication/Profile';
 import EditSubordinateTimeline from 'pages/Timeline/EditSubordinateTimeline';
 import UserSettings from 'pages/User/UserSettings';
+import { useUser } from 'utilities/Context/UserContext';
+import { UserMenuOptions } from 'utilities/Function/UserMenuOptions';
+import { MenuItem } from 'primereact/menuitem';
 
 const App = (props: any) => {
     const [rightMenuActive, setRightMenuActive] = useState(false);
@@ -44,37 +47,15 @@ const App = (props: any) => {
     const [resetActiveIndex, setResetActiveIndex] = useState<boolean>(false);
     const copyTooltipRef = useRef<any>();
     const location = useLocation();
-
+    const { privilege, userDetail } = useUser();
+    const [menu, setMenu] = useState<MenuItem[]>([]);
     PrimeReact.ripple = true;
 
-    const menu = [
-        {
-            label: 'Dashboard',
-            icon: 'pi pi-chart-bar',
-            to: '/Dashboard'
-        },
-        {
-            label: 'Timeline',
-            icon: 'pi pi-clock',
-            items: [
-                {
-                    label: 'Add Subordinate Timeline',
-                    icon: 'pi pi-plus',
-                    to: '/AddSubordinateTimeline'
-                },
-                {
-                    label: 'Subordinate Timeline Listing',
-                    icon: 'pi pi-list',
-                    to: '/SubordinateTimelineListing'
-                }
-            ]
-        },
-        {
-            label: 'User Settings',
-            icon: 'pi pi-cog',
-            to: '/UserSettings'
+    useEffect(() => {
+        if (privilege) {
+            setMenu(UserMenuOptions(privilege, userDetail?.job_title));
         }
-    ];
+    }, [privilege]);
 
     const routes = [
         { parent: 'Dashboard', label: 'Dashboard', parent_url: 'Dashboard', label_url: 'Dashboard' },

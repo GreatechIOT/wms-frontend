@@ -18,6 +18,9 @@ import { MultiSelect } from 'primereact/multiselect';
 import CategoryService from 'services/CategoryService';
 import { CategoryType } from 'utilities/Interface/CategoryInterface';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { useUser } from 'utilities/Context/UserContext';
+import LoadingAnimation from 'utilities/Animation/LoadingAnimation';
+import { Access } from 'pages/LogFiles/Access';
 
 const EngineerTimelineListing = () => {
     const [globalFilterValue, setGlobalFilterValue] = useState<string>('');
@@ -35,6 +38,7 @@ const EngineerTimelineListing = () => {
     const [expandedRows, setExpandedRows] = useState([]);
     const timelineService = new TimelineService();
     const categoryService = new CategoryService();
+    const { privilege } = useUser();
 
     const getActiveCategoryForItem = () => {
         let apiFunc = categoryService.getActiveCategoryForItem;
@@ -197,53 +201,61 @@ const EngineerTimelineListing = () => {
 
     return (
         <React.Fragment>
-            <ConfirmDialog />
-            <div className="grid">
-                <div className="col-12">
-                    <div className="card">
-                        <div style={{ marginBottom: '40px' }}>
-                            <DataTable
-                                header={renderHeader}
-                                paginator
-                                rows={10}
-                                //filterDisplay="row"
-                                filters={filters}
-                                onFilter={(e: any) => setFilters(e.filters)}
-                                value={timelineList}
-                                globalFilterFields={['item.category.category_type', 'item.item_name', 'user.name']}
-                                rowsPerPageOptions={[5, 10, 25]}
-                                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} projects"
-                                emptyMessage="No project found."
-                                loading={loading}
-                                rowGroupMode="subheader"
-                                groupRowsBy="user.name"
-                                expandableRowGroups
-                                rowGroupHeaderTemplate={headerTemplate}
-                                expandedRows={expandedRows}
-                                onRowToggle={(e: any) => setExpandedRows(e.data)}
-                                sortField="user.name"
-                            >
-                                <Column
-                                    field="item.category.category_type"
-                                    header="Project Category"
-                                    filterField="item.category.category_type"
-                                    showFilterMatchModes={false}
-                                    filterMenuStyle={{ width: '14rem' }}
-                                    style={{ minWidth: '14rem' }}
-                                    filter
-                                    filterElement={categoryFilterTemplate}
-                                />
-                                <Column field="item.item_name" header="Project ID" />
-                                <Column field="item.item_description" header="Project Description" body={descriptionBodyTemplate} />
+            {!privilege ? (
+                <LoadingAnimation />
+            ) : privilege && privilege?.view_timeline ? (
+                <>
+                    <ConfirmDialog />
+                    <div className="grid">
+                        <div className="col-12">
+                            <div className="card">
+                                <div style={{ marginBottom: '40px' }}>
+                                    <DataTable
+                                        header={renderHeader}
+                                        paginator
+                                        rows={10}
+                                        //filterDisplay="row"
+                                        filters={filters}
+                                        onFilter={(e: any) => setFilters(e.filters)}
+                                        value={timelineList}
+                                        globalFilterFields={['item.category.category_type', 'item.item_name', 'user.name']}
+                                        rowsPerPageOptions={[5, 10, 25]}
+                                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} projects"
+                                        emptyMessage="No project found."
+                                        loading={loading}
+                                        rowGroupMode="subheader"
+                                        groupRowsBy="user.name"
+                                        expandableRowGroups
+                                        rowGroupHeaderTemplate={headerTemplate}
+                                        expandedRows={expandedRows}
+                                        onRowToggle={(e: any) => setExpandedRows(e.data)}
+                                        sortField="user.name"
+                                    >
+                                        <Column
+                                            field="item.category.category_type"
+                                            header="Project Category"
+                                            filterField="item.category.category_type"
+                                            showFilterMatchModes={false}
+                                            filterMenuStyle={{ width: '14rem' }}
+                                            style={{ minWidth: '14rem' }}
+                                            filter
+                                            filterElement={categoryFilterTemplate}
+                                        />
+                                        <Column field="item.item_name" header="Project ID" />
+                                        <Column field="item.item_description" header="Project Description" body={descriptionBodyTemplate} />
 
-                                <Column field="end_date" body={timelineBodyTemplate} header="Timeline" sortable />
-                                <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />
-                            </DataTable>
+                                        <Column field="end_date" body={timelineBodyTemplate} header="Timeline" sortable />
+                                        {privilege && privilege?.edit_timeline && <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />}
+                                    </DataTable>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </>
+            ) : (
+                <Access />
+            )}
         </React.Fragment>
     );
 };

@@ -1,19 +1,7 @@
-import { Blocks } from 'react-loader-spinner';
-
+import { Player } from '@lottiefiles/react-lottie-player';
+import loadingAnimation from '../../assets/lottie/loading.json';
 const LoadingAnimation = () => {
-    return (
-        <div style={{ margin: '10% 0% 10% 45%' }}>
-            <Blocks
-                visible={true}
-                height="80"
-                width="80"
-                ariaLabel="blocks-loading"
-                color="#00bea6"
-                wrapperStyle={{}}
-                wrapperClass="blocks-wrapper"
-            />
-        </div>
-    );
+    return <Player src={loadingAnimation} className="player" style={{ height: '400px', width: '400px' }} loop autoplay />;
 };
 
 export default LoadingAnimation;

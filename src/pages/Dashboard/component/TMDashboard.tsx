@@ -11,9 +11,9 @@ import { callApi } from 'utilities/Function/CallAPI';
 import { useNavigate } from 'react-router-dom';
 import { showErrorToast } from 'utilities/Function/CustomToast';
 import moment from 'moment';
-import LoadingAnimation from '../../../assets/lottie/loading.json';
 
 import { Player } from '@lottiefiles/react-lottie-player';
+import LoadingAnimation from 'utilities/Animation/LoadingAnimation';
 const TMDashboard = () => {
     const [barChartData, setBarChartData] = useState<any>(null);
     const [barChartOptions, setBarChartOptions] = useState<any>(null);
@@ -116,7 +116,7 @@ const TMDashboard = () => {
                             />
                         </div>
                         {loading ? (
-                            <Player src={LoadingAnimation} className="player" style={{ height: '400px', width: '400px' }} loop autoplay />
+                            <LoadingAnimation />
                         ) : (
                             // barChartData && barChartOptions && <Bar ref={chartRef} onClick={handleBarClick} options={barChartOptions} data={barChartData} />
                             barChartData && barChartOptions && <Bar ref={chartRef} options={barChartOptions} data={barChartData} />
