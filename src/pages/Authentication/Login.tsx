@@ -17,6 +17,7 @@ import { DOCUMENT_TITLE } from 'utilities/Constant/DocumentTitleName';
 import logo from 'assets/images/wmsLogo.png';
 import greatechLogo from './../../assets/images/greatechLogo.png';
 import backgroundImg from './../../assets/images/wmsLoginWallpaper.png';
+import { system_name } from 'config/ServerConfig';
 
 export const Login = (props: any) => {
     document.title = DOCUMENT_TITLE.Login;
@@ -34,10 +35,10 @@ export const Login = (props: any) => {
             password: Yup.string().required('Required')
         }),
         onSubmit: async (values: any) => {
-    
             const data = {
                 employee_id: values.employee_id,
-                password: values.password
+                password: values.password,
+                system_name: system_name
             };
 
             let apiFunc = userService.login;
@@ -54,7 +55,6 @@ export const Login = (props: any) => {
                     data
                 );
 
-                
                 if (res?.status) {
                     localStorage.setItem('wms_token', res?.data.token + '@' + res?.data.id);
                     navigate('/Dashboard');

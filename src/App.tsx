@@ -19,11 +19,11 @@ import './css/App.scss';
 import { PrivateRoute } from 'PrivateRoute';
 import GanttChart from 'pages/GanttChart/GanttChart';
 import { RiTimeLine } from 'react-icons/ri';
-import AddEngineerTimeline from 'pages/Timeline/AddEngineerTimeline';
-import EngineerTimelineListing from 'pages/Timeline/EngineerTimelineListing';
+import AddSubordinateTimeline from 'pages/Timeline/AddSubordinateTimeline';
+import SubordinateTimelineListing from 'pages/Timeline/SubordinateTimelineListing';
 import Dashboard from 'pages/Dashboard/Dashboard';
 import Profile from 'pages/Authentication/Profile';
-import EditEngineerTimeline from 'pages/Timeline/EditEngineerTimeline';
+import EditSubordinateTimeline from 'pages/Timeline/EditSubordinateTimeline';
 import UserSettings from 'pages/User/UserSettings';
 
 const App = (props: any) => {
@@ -58,14 +58,14 @@ const App = (props: any) => {
             icon: 'pi pi-clock',
             items: [
                 {
-                    label: 'Add Engineer Timeline',
+                    label: 'Add Subordinate Timeline',
                     icon: 'pi pi-plus',
-                    to: '/AddEngineerTimeline'
+                    to: '/AddSubordinateTimeline'
                 },
                 {
-                    label: 'Engineer Timeline Listing',
+                    label: 'Subordinate Timeline Listing',
                     icon: 'pi pi-list',
-                    to: '/EngineerTimelineListing'
+                    to: '/SubordinateTimelineListing'
                 }
             ]
         },
@@ -78,9 +78,9 @@ const App = (props: any) => {
 
     const routes = [
         { parent: 'Dashboard', label: 'Dashboard', parent_url: 'Dashboard', label_url: 'Dashboard' },
-        { parent: 'Engineer Timeline Listing', label: 'Add Engineer Timeline', parent_url: 'EngineerTimelineListing', label_url: 'AddEngineerTimeline' },
-        { parent: 'Engineer Timeline Listing', label: 'Edit Engineer Timeline', parent_url: 'EngineerTimelineListing', label_url: 'EditEngineerTimeline' },
-        { parent: 'Engineer Timeline Listing', label: 'Engineer Timeline Listing', parent_url: 'EngineerTimelineListing', label_url: 'EngineerTimelineListing' },
+        { parent: 'Subordinate Timeline Listing', label: 'Add Subordinate Timeline', parent_url: 'SubordinateTimelineListing', label_url: 'AddSubordinateTimeline' },
+        { parent: 'Subordinate Timeline Listing', label: 'Edit Subordinate Timeline', parent_url: 'SubordinateTimelineListing', label_url: 'EditSubordinateTimeline' },
+        { parent: 'Subordinate Timeline Listing', label: 'Subordinate Timeline Listing', parent_url: 'SubordinateTimelineListing', label_url: 'SubordinateTimelineListing' },
         { parent: 'Dashboard', label: 'Profile', parent_url: 'Dashboard', label_url: 'Profile' },
         { parent: 'User Settings', label: 'User Settings', parent_url: 'UserSettings', label_url: 'UserSettings' }
     ];
@@ -357,9 +357,9 @@ const App = (props: any) => {
                     <Routes>
                         <Route path="/GanttChart" element={<GanttChart />} />
                         <Route path="/Dashboard" element={<Dashboard />} />
-                        <Route path="/AddEngineerTimeline" element={<AddEngineerTimeline />} />
-                        <Route path="/EditEngineerTimeline/:id" element={<EditEngineerTimeline />} />
-                        <Route path="/EngineerTimelineListing" element={<EngineerTimelineListing />} />
+                        <Route path="/AddSubordinateTimeline" element={<AddSubordinateTimeline />} />
+                        <Route path="/EditSubordinateTimeline/:id" element={<EditSubordinateTimeline />} />
+                        <Route path="/SubordinateTimelineListing" element={<SubordinateTimelineListing />} />
                         <Route path="/UserSettings" element={<UserSettings />} />
                         <Route path="/profile" element={<Profile />} />
                     </Routes>

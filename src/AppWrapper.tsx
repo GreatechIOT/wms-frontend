@@ -7,6 +7,7 @@ import { ForgetPassword } from './pages/Authentication/ForgetPassword';
 import { ResetPassword } from './pages/Authentication/ResetPassword';
 import { ToastContainer } from 'react-toastify';
 import { UserProvider } from 'utilities/Context/UserContext';
+import { Access } from 'pages/LogFiles/Access';
 
 const AppWrapper = (props: any) => {
     const [colorScheme, setColorScheme] = useState('dark');
@@ -86,6 +87,7 @@ const AppWrapper = (props: any) => {
                 <Route path="/login" element={<Login colorScheme={colorScheme} />} />
                 <Route path="/forgetPassword" element={<ForgetPassword colorScheme={colorScheme} />} />
                 <Route path="/resetPassword/:user_id/:token/Employee" element={<ResetPassword colorScheme={colorScheme} />} />
+
                 <Route
                     path="*"
                     element={

@@ -59,7 +59,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     if (res && res?.status) {
                         setUserDetail(res.data);
                         const privilege = JSON.parse(res.data?.privilege);
-                        setPrivilege(privilege[0]?.TLS);
+                        setPrivilege(privilege[0]?.WMS);
                     } else {
                         if (!res.showError) {
                             showErrorToast(res?.message);

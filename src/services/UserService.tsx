@@ -53,4 +53,12 @@ export default class UserService {
         return axiosInstance.post(`${url}/changePassword`, values).then((res) => res.data);
     }
 
+    getUserPrivilege(values: any) {
+        return axiosInstance.post(`${url}/getUserPrivilege`, values).then((res) => res.data);
+    }
+
+    editUserPrivilege(values: any) {
+        return axiosInstance.post(`${url}/editUserPrivilege`, values).then((res) => res.data);
+    }
+
 }

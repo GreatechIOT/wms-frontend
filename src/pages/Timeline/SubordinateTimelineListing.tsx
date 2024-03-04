@@ -96,7 +96,7 @@ const EngineerTimelineListing = () => {
             label: 'Edit',
             icon: 'pi pi-pencil',
             command: (e) => {
-                navigate('/EditEngineerTimeline/' + selectedTimeline?.id);
+                navigate('/EditSubordinateTimeline/' + selectedTimeline?.id);
             }
         },
         {
@@ -192,7 +192,7 @@ const EngineerTimelineListing = () => {
     };
 
     const headerTemplate = (data: any) => {
-        return <span className="font-bold">{data.user.name}</span>;
+        return <span className="text-lg font-bold">{data.user.name}</span>;
     };
 
     return (

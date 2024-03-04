@@ -5,6 +5,7 @@ interface configProps {
     backend_port: string;
 }
 console.log('REACT ENV', process.env.REACT_APP_ENV);
+const system_name = "WMS"
 const loginDevConfig = {
     hostname: 'http://localhost',
     frontend_port: '3000',
@@ -54,4 +55,4 @@ if (process.env.REACT_APP_ENV === 'production') {
     config = devConfig;
     loginConfig = loginDevConfig;
 }
-export { config as default, loginConfig };
+export { config as default, loginConfig, system_name };

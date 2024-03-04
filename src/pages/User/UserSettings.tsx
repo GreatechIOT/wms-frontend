@@ -46,41 +46,41 @@ const UserSettings = () => {
         return capitalizedWords.join(' '); // Join the words with a space
     };
 
-    // const editUserPrivilege = (user_id: number | null) => {
+    const editUserPrivilege = (user_id: number | null) => {
 
-    //     let oldUserSettingObject = userSettingList.find((role: any) => role.id === user_id).privilege;
-    //     oldUserSettingObject[0].TLS = userSettingObject;
-    //     let newUserSettingObject = oldUserSettingObject;
+        let oldUserSettingObject = userSettingList.find((role: any) => role.id === user_id).privilege;
+        oldUserSettingObject[0].WMS = userSettingObject;
+        let newUserSettingObject = oldUserSettingObject;
 
-    //     const data = {
-    //         user_id: user_id,
-    //         privilege: JSON.stringify(newUserSettingObject)
-    //     };
+        const data = {
+            user_id: user_id,
+            privilege: JSON.stringify(newUserSettingObject)
+        };
 
-    //     let apiFunc = userService.editUserPrivilege;
+        let apiFunc = userService.editUserPrivilege;
 
-    //     callApi(
-    //         {
-    //             setLoading,
-    //             apiFunc,
-    //             navigateToLogin: () => {
-    //                 navigate('/login');
-    //             }
-    //         },
-    //         data
-    //     ).then((res) => {
-    //         if (res && res?.status) {
-    //             showSuccessToast(res.message);
-    //             setVisibleEditUserPrivilege(false);
-    //             setUser_id(null);
-    //             setIsEdited(!isEdited);
-    //         } else {
-    //             if (!res.showError) {
-    //                 showErrorToast(res?.message);
-    //             }
-    //         }
-    //     });
-    // };
+        callApi(
+            {
+                setLoading,
+                apiFunc,
+                navigateToLogin: () => {
+                    navigate('/login');
+                }
+            },
+            data
+        ).then((res) => {
+            if (res && res?.status) {
+                showSuccessToast(res.message);
+                setVisibleEditUserPrivilege(false);
+                setUser_id(null);
+                setIsEdited(!isEdited);
+            } else {
+                if (!res.showError) {
+                    showErrorToast(res?.message);
+                }
+            }
+        });
+    };
     const rowBodyTemplate = (data: any, options: any) => {
         const fieldArray = options.field.split('.');
 
@@ -94,22 +94,47 @@ const UserSettings = () => {
     };
 
     const groupUserSettingObject = (array: string[]) => {
-        const categories: any = {};
+        const categorizedActions: { [key: string]: string[] } = {};
 
-        array.forEach((permission: any) => {
-            const [action, category] = permission.split('_');
+        array.forEach((action) => {
+            const parts = action.split('_');
+            const category = parts.length > 1 ? parts[1].charAt(0).toUpperCase() + parts[1].slice(1) : parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
 
-            const capitalizedCategory = category.charAt(0).toUpperCase() + category.slice(1);
-
-            if (!categories[capitalizedCategory]) {
-                categories[capitalizedCategory] = [];
+            if (!categorizedActions[category]) {
+                categorizedActions[category] = [];
             }
 
-            categories[capitalizedCategory].push(permission);
+            categorizedActions[category].push(action);
         });
 
-        setNewUserSettingArray(categories);
+        console.log(categorizedActions);
+        setNewUserSettingArray(categorizedActions);
     };
+
+    // const groupUserSettingObject = (array: string[]) => {
+    //     console.log(array)
+    //     const categories: any = {};
+
+    //     console.log(array)
+    //     array.forEach((permission: any) => {
+    //         const [action, category] = permission.split('_');
+    //         console.log(category)
+    //     })
+    //     // array.forEach((permission: any) => {
+    //     //     const [action, category] = permission.split('_');
+    //     //     console.log(category)
+
+    //     //     const capitalizedCategory = category.charAt(0).toUpperCase() + category.slice(1);
+
+    //     //     if (!categories[capitalizedCategory]) {
+    //     //         categories[capitalizedCategory] = [];
+    //     //     }
+
+    //     //     categories[capitalizedCategory].push(permission);
+    //     // });
+
+    //     // setNewUserSettingArray(categories);
+    // };
 
     const displayEditUserPrivilegeDialog = (rowData: any, c_props: any) => {
         setVisibleEditUserPrivilege(true);
@@ -124,70 +149,76 @@ const UserSettings = () => {
         try {
             const new_privilege = JSON.parse(privilege);
 
-            return new_privilege[0].TLS;
+            return new_privilege[0].WMS;
         } catch (error) {
             console.error('Error parsing privilege JSON:', error);
             return null;
         }
     };
 
-    // useEffect(() => {
-    //     setLoading(true);
+    useEffect(() => {
+        setLoading(true);
 
-    //     let apiFunc = userService.getUserPrivilege;
-    //     let cols: any = [];
+        let apiFunc = userService.getUserPrivilege;
+        let cols: any = [];
 
-    //     callApi(
-    //         {
-    //             apiFunc,
-    //             setLoading,
-    //             navigateToLogin: () => {
-    //                 navigate('/login');
-    //             }
-    //         },
-    //         {}
-    //     ).then((res: any) => {
-    //         if (res && res?.status) {
-    //             const privilege_list = res.data?.map((item: any) => {
-    //                 return {
-    //                     ...item,
-    //                     privilege: JSON.parse(item.privilege)
-    //                 };
-    //             });
+        callApi(
+            {
+                apiFunc,
+                setLoading,
+                navigateToLogin: () => {
+                    navigate('/login');
+                }
+            },
+            {}
+        ).then((res: any) => {
+            if (res && res?.status) {
+                const privilege_list = res.data?.map((item: any) => {
+                    return {
+                        ...item,
+                        privilege: JSON.parse(item.privilege)
+                    };
+                });
 
-    //             setUserSettingList(privilege_list);
+                console.log(privilege_list);
 
-    //             const newUserList = res.data?.map((item: any) => {
-    //                 return {
-    //                     ...item,
-    //                     privilege: parsePrivilege(item.privilege)
-    //                 };
-    //             });
-    //             setUserList(newUserList);
+                setUserSettingList(privilege_list);
 
-    //             const privilege = newUserList[0]?.privilege;
+                const newUserList = res.data?.map((item: any) => {
+                    return {
+                        ...item,
+                        privilege: parsePrivilege(item.privilege)
+                    };
+                });
+                setUserList(newUserList);
 
-    //             for (const key in privilege) {
-    //                 if (privilege?.hasOwnProperty(key)) {
-    //                     const words = key.split('_');
-    //                     const firstWord = words[0];
-    //                     const secondWord = words.slice(1).join(' ');
-    //                     const formattedHeader = `${firstWord.charAt(0).toUpperCase()}${firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase()}${secondWord.slice(1)}`;
+                console.log(newUserList);
 
-    //                     cols.push({
-    //                         field: 'privilege.' + key,
-    //                         header: formattedHeader
-    //                     });
-    //                 }
-    //             }
-    //             setColumns(cols);
-    //         } else {
-    //             if (!res.showError) {
-    //                 showErrorToast(res?.message);
-    //             }
-    //         }
-    //     });
-    // }, [isEdited]);
+                const privilege = newUserList[0]?.privilege;
+
+                console.log(privilege);
+
+                for (const key in privilege) {
+                    if (privilege?.hasOwnProperty(key)) {
+                        const words = key.split('_');
+                        const firstWord = words[0];
+                        const secondWord = words.slice(1).join(' ');
+                        const formattedHeader = `${firstWord.charAt(0).toUpperCase()}${firstWord.slice(1)} ${secondWord.charAt(0).toUpperCase()}${secondWord.slice(1)}`;
+
+                        cols.push({
+                            field: 'privilege.' + key,
+                            header: formattedHeader
+                        });
+                    }
+                }
+                setColumns(cols);
+            } else {
+                if (!res.showError) {
+                    showErrorToast(res?.message);
+                }
+            }
+        });
+    }, [isEdited]);
 
     const renderHeader = () => {
         return (
@@ -210,6 +241,7 @@ const UserSettings = () => {
     return (
         <>
             <Dialog
+            //style={{width: '300px'}}
                 header={username}
                 visible={visibleEditUserPrivilege}
                 onHide={() => {
@@ -242,10 +274,10 @@ const UserSettings = () => {
                         </div>
                     </div>
                 ))}
-                {/* 
+                
                 <div className="text-right">
                     <Button label="Save Changes" icon="pi pi-save" onClick={() => editUserPrivilege(user_id)} loading={loading} />
-                </div> */}
+                </div>
             </Dialog>
 
             <div className="grid">
@@ -277,7 +309,7 @@ const UserSettings = () => {
                                     body={(data, c_props) => (
                                         <div className="flex" style={{ display: 'flex', justifyContent: 'center' }}>
                                             <Button
-                                                className="p-button-text bg-orange-500 text-white"
+                                                className="p-button-text bg-blue-500 text-white"
                                                 icon="pi pi-pencil"
                                                 tooltip="Edit"
                                                 tooltipOptions={{ position: 'left' }}
@@ -291,10 +323,10 @@ const UserSettings = () => {
                                         </div>
                                     )}
                                 />
-                                <Column field="name" header="Employee" frozen></Column>
+                                <Column style={{ minWidth: '200px', maxWidth: '200px' }} field="name" header="Employee" frozen></Column>
 
                                 {columns?.map((col: any, i: any) => (
-                                    <Column key={col.field} field={col.field} header={col.header} body={rowBodyTemplate}></Column>
+                                    <Column style={{minWidth: '200px'}}  key={col.field} field={col.field} header={col.header} body={rowBodyTemplate}></Column>
                                 ))}
                             </DataTable>
                         </div>
