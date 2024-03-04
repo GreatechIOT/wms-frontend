@@ -76,7 +76,7 @@ const EditEngineerTimeline = () => {
         ).then((res: any) => {
             if (res && res?.status) {
                 showSuccessToast(res?.message);
-                navigate('/EngineerTimelineListing');
+                navigate('/SubordinateTimelineListing');
             } else {
                 if (!res.showError) {
                     showErrorToast(res?.message);

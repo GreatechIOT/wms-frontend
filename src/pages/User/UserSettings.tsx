@@ -13,6 +13,7 @@ import { getToken } from 'utilities/Function/GetLocalStorage';
 import { onGlobalFilterChange } from 'utilities/Function/DataTableKeywordSearch';
 import UserService from 'services/UserService';
 import { useNavigate } from 'react-router-dom';
+import { system_name } from 'config/ServerConfig';
 
 const UserSettings = () => {
     const [username, setUsername] = useState<string>('');
@@ -47,14 +48,14 @@ const UserSettings = () => {
     };
 
     const editUserPrivilege = (user_id: number | null) => {
-
         let oldUserSettingObject = userSettingList.find((role: any) => role.id === user_id).privilege;
         oldUserSettingObject[0].WMS = userSettingObject;
         let newUserSettingObject = oldUserSettingObject;
 
         const data = {
             user_id: user_id,
-            privilege: JSON.stringify(newUserSettingObject)
+            privilege: JSON.stringify(newUserSettingObject),
+            system_name: system_name
         };
 
         let apiFunc = userService.editUserPrivilege;
@@ -241,7 +242,7 @@ const UserSettings = () => {
     return (
         <>
             <Dialog
-            //style={{width: '300px'}}
+                //style={{width: '300px'}}
                 header={username}
                 visible={visibleEditUserPrivilege}
                 onHide={() => {
@@ -274,7 +275,7 @@ const UserSettings = () => {
                         </div>
                     </div>
                 ))}
-                
+
                 <div className="text-right">
                     <Button label="Save Changes" icon="pi pi-save" onClick={() => editUserPrivilege(user_id)} loading={loading} />
                 </div>
@@ -326,7 +327,7 @@ const UserSettings = () => {
                                 <Column style={{ minWidth: '200px', maxWidth: '200px' }} field="name" header="Employee" frozen></Column>
 
                                 {columns?.map((col: any, i: any) => (
-                                    <Column style={{minWidth: '200px'}}  key={col.field} field={col.field} header={col.header} body={rowBodyTemplate}></Column>
+                                    <Column style={{ minWidth: '200px' }} key={col.field} field={col.field} header={col.header} body={rowBodyTemplate}></Column>
                                 ))}
                             </DataTable>
                         </div>
