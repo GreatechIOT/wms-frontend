@@ -82,7 +82,7 @@ export const ResetPassword = (props: any) => {
         if (isMounted) {
             setLoading(true);
             if (getToken() !== null) {
-                navigate('/');
+                navigate('/Dashboard');
             } else {
                 setLoading(false);
             }

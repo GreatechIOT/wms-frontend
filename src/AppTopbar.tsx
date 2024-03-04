@@ -22,12 +22,12 @@ const AppTopbar = (props: any) => {
                         <i className="pi pi-bars"></i>
                     </button>
 
-                    <button className="logo p-link" onClick={() => navigate('/')}>
+                    <button className="logo p-link" onClick={() => navigate('/Dashboard')}>
                         <img src={logo} alt="logo" />
                     </button>
 
                     {/* <button className="app-name p-link" onClick={() => navigate('/')}> */}
-                    <p className="ml-3 p-link" style={{ fontSize: '1.6em' }} onClick={() => navigate('/')}>
+                    <p className="ml-3 p-link" style={{ fontSize: '1.6em' }} onClick={() => navigate('/Dashboard')}>
                         WMS
                     </p>
                     {/* </button> */}

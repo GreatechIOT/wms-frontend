@@ -74,7 +74,7 @@ export const Login = (props: any) => {
         if (isMounted) {
             setLoading(true);
             if (getToken() !== null) {
-                navigate('/');
+                navigate('/Dashboard');
             } else {
                 setLoading(false);
             }

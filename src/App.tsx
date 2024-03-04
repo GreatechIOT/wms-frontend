@@ -49,11 +49,6 @@ const App = (props: any) => {
 
     const menu = [
         {
-            label: 'Home',
-            icon: 'pi pi-home',
-            to: '/GanttChart'
-        },
-        {
             label: 'Dashboard',
             icon: 'pi pi-chart-bar',
             to: '/Dashboard'
@@ -82,7 +77,6 @@ const App = (props: any) => {
     ];
 
     const routes = [
-        { parent: 'Home', label: 'Home', parent_url: 'Home', label_url: 'Home' },
         { parent: 'Dashboard', label: 'Dashboard', parent_url: 'Dashboard', label_url: 'Dashboard' },
         { parent: 'Engineer Timeline Listing', label: 'Add Engineer Timeline', parent_url: 'EngineerTimelineListing', label_url: 'AddEngineerTimeline' },
         { parent: 'Engineer Timeline Listing', label: 'Edit Engineer Timeline', parent_url: 'EngineerTimelineListing', label_url: 'EditEngineerTimeline' },
