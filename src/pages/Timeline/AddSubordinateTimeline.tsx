@@ -29,7 +29,7 @@ const AddEngineerTimeline = () => {
         console.log(userIdArray);
 
         if (values?.timeline?.[1] === null) {
-            let date = values?.timeline?.[0];
+            let date = moment(values?.timeline?.[0]).endOf('W').toDate();
             values.timeline[1] = date;
         }
 
