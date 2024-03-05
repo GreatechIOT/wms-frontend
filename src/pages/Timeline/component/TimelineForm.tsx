@@ -29,6 +29,7 @@ interface TimelineProps {
     category_id?: any;
 }
 const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loading, setLoading, isAddTimeline, category_id }) => {
+    const minDate = new Date(2024, 0);
     const categoryService = new CategoryService();
     const itemService = new ItemService();
     const userService = new UserService();
@@ -302,6 +303,7 @@ const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loadin
                                         selectionMode="range"
                                         readOnlyInput
                                         showButtonBar
+                                        minDate={minDate}
                                         showWeek
                                     />
                                 </div>

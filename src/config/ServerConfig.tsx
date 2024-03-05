@@ -5,7 +5,7 @@ interface configProps {
     backend_port: string;
 }
 console.log('REACT ENV', process.env.REACT_APP_ENV);
-const system_name = "WMS"
+const system_name = 'WMS';
 const loginDevConfig = {
     hostname: 'http://localhost',
     frontend_port: '3000',
@@ -41,6 +41,17 @@ const testProdConfig = {
     frontend_port: '3000',
     backend_port: '1008'
 };
+const loginServerTestConfig = {
+    hostname: 'http://iot-tls.greatech-group.com',
+    frontend_port: '3000',
+    backend_port: '1099'
+};
+
+const serverTestConfig = {
+    hostname: 'http://iot-tls.greatech-group.com',
+    frontend_port: '3000',
+    backend_port: '1098'
+};
 
 let config: configProps;
 let loginConfig: configProps;
@@ -51,6 +62,9 @@ if (process.env.REACT_APP_ENV === 'production') {
 } else if (process.env.REACT_APP_ENV === 'test_server') {
     config = testProdConfig;
     loginConfig = loginTestProdConfig;
+} else if (process.env.REACT_APP_ENV === 'server_test') {
+    config = serverTestConfig;
+    loginConfig = loginServerTestConfig;
 } else {
     config = devConfig;
     loginConfig = loginDevConfig;

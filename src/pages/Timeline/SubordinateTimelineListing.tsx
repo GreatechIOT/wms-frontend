@@ -218,7 +218,7 @@ const EngineerTimelineListing = () => {
                                         filters={filters}
                                         onFilter={(e: any) => setFilters(e.filters)}
                                         value={timelineList}
-                                        globalFilterFields={['item.category.category_type', 'item.item_name', 'user.name']}
+                                        globalFilterFields={['item.category.category_type', 'item.item_name', 'user.name', 'item.item_description']}
                                         rowsPerPageOptions={[5, 10, 25]}
                                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} projects"

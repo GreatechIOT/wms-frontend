@@ -49,7 +49,7 @@ const TMDashboard = () => {
             console.log(res.data_format.title);
             if (res && res?.status) {
                 console.log(res);
-                res.data_format.datasets[0].backgroundColor = 'rgba(54, 162, 235, 0.8)';
+                res.data_format.datasets[0].backgroundColor = 'rgba(255, 206, 86, 0.8)';
                 res.data_format.datasets[1].backgroundColor = 'rgba(255, 99, 132, 0.8)';
                 res.data_format.datasets[2].backgroundColor = 'rgba(75, 192, 192, 0.8)';
 
@@ -67,23 +67,111 @@ const TMDashboard = () => {
         });
     }, [date]);
 
-    // const handleBarClick = (event: any) => {
-    //     console.log(getDatasetAtEvent(chartRef?.current, event));
-    //     const chartInstance: any = chartRef.current;
-    //     console.log(chartInstance);
-    //     const activePoints = chartInstance.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
-    //     if (activePoints.length) {
-    //         const firstPoint = activePoints[0];
-    //         const ww = chartInstance.data.labels[firstPoint.index];
-    //         const value = chartInstance.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
-    //         const label = chartInstance.data.datasets[firstPoint.datasetIndex].label;
-    //         setLabel(label);
-    //         setValue(value);
-    //         setWorkweek(ww);
-    //         setVisible(true);
-    //         //alert('Left Click detected!\nlabel: ' + label + '\nvalue: ' + value + '\nWW: ' + ww);
-    //     }
-    // };
+    // useEffect(() => {
+    //     const documentStyle = getComputedStyle(document.documentElement);
+
+    //     const textColor = documentStyle.getPropertyValue('--text-color');
+    //     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    //     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+    //     const data = {
+    //         labels: [
+    //             'WW1',
+    //             'WW2',
+    //             'WW3',
+    //             'WW4',
+    //             'WW5',
+    //             'WW6',
+    //             'WW7',
+    //             'WW8',
+    //             'WW9',
+    //             'WW10',
+    //             'WW11',
+    //             'WW12',
+    //             'WW13',
+    //             'WW14',
+    //             'WW15',
+    //             'WW16',
+    //             'WW17',
+    //             'WW18',
+    //             'WW19',
+    //             'WW20',
+    //             'WW21',
+    //             'WW22',
+    //             'WW23',
+    //             'WW24',
+    //             'WW25',
+    //             'WW26',
+    //             'WW27',
+    //             'WW28',
+    //             'WW29',
+    //             'WW30',
+    //             'WW31',
+    //             'WW32',
+    //             'WW33',
+    //             'WW34',
+    //             'WW35',
+    //             'WW36',
+    //             'WW37',
+    //             'WW38',
+    //             'WW39',
+    //             'WW40',
+    //             'WW41',
+    //             'WW42',
+    //             'WW43',
+    //             'WW44',
+    //             'WW45',
+    //             'WW46',
+    //             'WW47',
+    //             'WW48',
+    //             'WW49',
+    //             'WW50',
+    //             'WW51',
+    //             'WW52'
+    //         ],
+    //         datasets: [
+    //             {
+    //                 label: 'Project',
+    //                 backgroundColor: 'rgba(255, 206, 86, 0.8)',
+    //                 borderColor: documentStyle.getPropertyValue('--blue-500'),
+    //                 data: [73, 28, 85, 100, 73, 65, 43, 79, 73, 47, 83, 76, 74, 51, 60, 37, 59, 71, 96, 66, 61, 78, 64, 48, 70, 74, 44, 79, 47, 71, 74, 94, 50, 90, 99, 44, 82, 38, 66, 74, 21, 96, 66, 80, 45, 60, 86, 60, 49, 79, 60, 40]
+    //             },
+    //             {
+    //                 label: 'RFQ',
+    //                 backgroundColor: 'rgba(255, 99, 132, 0.8)',
+    //                 borderColor: documentStyle.getPropertyValue('--pink-500'),
+    //                 data: [21, 44, 26, 29, 35, 29, 57, 31, 50, 24, 44, 32, 46, 53, 16, 67, 49, 49, 27, 50, 35, 31, 47, 47, 34, 31, 57, 37, 53, 41, 35, 37, 63, 20, 12, 56, 34, 87, 43, 66, 99, 41, 55, 41, 88, 25, 40, 40, 31, 39, 40, 40]
+    //             },
+    //             {
+    //                 label: 'Available',
+    //                 backgroundColor: 'rgba(75, 192, 192, 0.8)',
+    //                 borderColor: documentStyle.getPropertyValue('--green-500'),
+    //                 data: [46, 68, 29, 11, 32, 46, 40, 30, 17, 69, 13, 32, 20, 36, 64, 36, 32, 20, 17, 24, 44, 31, 29, 45, 36, 35, 39, 24, 40, 28, 31, 9, 27, 30, 29, 40, 24, 15, 31, 0, 20, 3, 19, 19, 7, 55, 14, 40, 60, 22, 40, 60]
+    //             }
+    //         ]
+    //     };
+    //     setBarChartData(data);
+    //     setBarChartOptions(stackedBarChartOption);
+      
+    // }, [])
+    
+
+    const handleBarClick = (event: any) => {
+        console.log(getDatasetAtEvent(chartRef?.current, event));
+        const chartInstance: any = chartRef.current;
+        console.log(chartInstance);
+        const activePoints = chartInstance.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+        if (activePoints.length) {
+            const firstPoint = activePoints[0];
+            const ww = chartInstance.data.labels[firstPoint.index];
+            const value = chartInstance.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+            const label = chartInstance.data.datasets[firstPoint.datasetIndex].label;
+            setLabel(label);
+            setValue(value);
+            setWorkweek(ww);
+            setVisible(true);
+            //alert('Left Click detected!\nlabel: ' + label + '\nvalue: ' + value + '\nWW: ' + ww);
+        }
+    };
 
     return (
         <React.Fragment>

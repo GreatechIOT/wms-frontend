@@ -41,7 +41,7 @@ const EditEngineerTimeline = () => {
                 let projectCategory = { project_category: { id: res.data.item.category.id, category_type: res.data.item.category.category_type } };
                 let projectID = { project_id: { id: res.data.item.id, item_name: res.data.item.item_name, item_description: res.data.item.item_description } };
                 let timeline = { timeline: [new Date(res.data.start_date), new Date(res.data.end_date)] };
-                let member = { members: [{ id: res.data.user_id, name: res.data.user.name, email: 'kyteh@greatech-group.com', employee_id: '201428' }] };
+                let member = { members: [{ id: res.data.user_id, name: res.data.user.name, email: res.data.user.email, employee_id: res.data.user.employee_id }] };
                 let values = { ...projectCategory, ...projectID, ...timeline, ...member };
                 setInitialValues((prev: any) => ({
                     ...prev,
