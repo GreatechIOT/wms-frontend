@@ -30,8 +30,10 @@ interface TimelineProps {
     category_id?: any;
     checked?: boolean | undefined;
     setChecked?: React.Dispatch<React.SetStateAction<boolean>>;
+    isSubmitted?: boolean | undefined;
+    setIsSubmitted?: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loading, setLoading, isAddTimeline, category_id, checked, setChecked }) => {
+const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loading, setLoading, isAddTimeline, category_id, checked, setChecked, isSubmitted, setIsSubmitted }) => {
     const minDate = new Date(2024, 0);
     const categoryService = new CategoryService();
     const itemService = new ItemService();
@@ -46,6 +48,13 @@ const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loadin
         members: Yup.array().min(1, 'Select at least one member').required('Members is required'),
         timeline: Yup.array().min(2, 'Select start and end date').required('Timeline is required')
     });
+
+    useEffect(() => {
+        if (isSubmitted) {
+            formik.resetForm();
+            setIsSubmitted && setIsSubmitted(false);
+        }
+    }, [isSubmitted]);
 
     const formik = useFormik({
         initialValues,
@@ -290,11 +299,8 @@ const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loadin
                                         id="timeline"
                                         name="timeline"
                                         onChange={(e: any) => {
-                                            console.log(e.value);
                                             if (e.value) {
                                                 formik.setFieldValue('timeline', [e.value ? moment(e.value[0]).startOf('W').toDate() : null, e.value[1] ? moment(e.value[1]).endOf('W').toDate() : null]);
-                                                console.log(moment(e.value[0]).startOf('W').toDate());
-                                                console.log(moment(e.value[0]).endOf('W').toDate());
                                             } else {
                                                 formik.setFieldValue('timeline', null);
                                             }
@@ -313,11 +319,11 @@ const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loadin
                                 <FormError touched={formik.touched.timeline} errors={formik.errors.timeline} />
                             </div>
                             {isAddTimeline && (
-                            <div className="ml-2 mt-2">
-                                <Checkbox onChange={(e: any) => setChecked && setChecked(e?.checked)} checked={checked ?? false} />
-                                &nbsp; Add More Item
-                            </div>
-                        )}
+                                <div className="ml-2 mt-2">
+                                    <Checkbox onChange={(e: any) => setChecked && setChecked(e?.checked)} checked={checked ?? false} />
+                                    &nbsp; Add More Timeline
+                                </div>
+                            )}
                             <SubmitFormButton label="Submit" loading={loading} />
                         </div>
                     </form>

@@ -108,34 +108,9 @@ const UserSettings = () => {
             categorizedActions[category].push(action);
         });
 
-        console.log(categorizedActions);
         setNewUserSettingArray(categorizedActions);
     };
 
-    // const groupUserSettingObject = (array: string[]) => {
-    //     console.log(array)
-    //     const categories: any = {};
-
-    //     console.log(array)
-    //     array.forEach((permission: any) => {
-    //         const [action, category] = permission.split('_');
-    //         console.log(category)
-    //     })
-    //     // array.forEach((permission: any) => {
-    //     //     const [action, category] = permission.split('_');
-    //     //     console.log(category)
-
-    //     //     const capitalizedCategory = category.charAt(0).toUpperCase() + category.slice(1);
-
-    //     //     if (!categories[capitalizedCategory]) {
-    //     //         categories[capitalizedCategory] = [];
-    //     //     }
-
-    //     //     categories[capitalizedCategory].push(permission);
-    //     // });
-
-    //     // setNewUserSettingArray(categories);
-    // };
 
     const displayEditUserPrivilegeDialog = (rowData: any, c_props: any) => {
         setVisibleEditUserPrivilege(true);
@@ -181,7 +156,6 @@ const UserSettings = () => {
                     };
                 });
 
-                console.log(privilege_list);
 
                 setUserSettingList(privilege_list);
 
@@ -193,11 +167,8 @@ const UserSettings = () => {
                 });
                 setUserList(newUserList);
 
-                console.log(newUserList);
-
                 const privilege = newUserList[0]?.privilege;
 
-                console.log(privilege);
 
                 for (const key in privilege) {
                     if (privilege?.hasOwnProperty(key)) {

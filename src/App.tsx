@@ -336,6 +336,8 @@ const App = (props: any) => {
 
                 <div className="layout-main-content">
                     <Routes>
+                        {privilege?.view_dashboard ? <Route path="/" element={<Dashboard />} /> : <Route path="/" element={<AddSubordinateTimeline />} />}
+
                         <Route path="/GanttChart" element={<GanttChart />} />
                         <Route path="/Dashboard" element={<Dashboard />} />
                         <Route path="/AddSubordinateTimeline" element={<AddSubordinateTimeline />} />

@@ -78,9 +78,7 @@ const EngineerTimelineListing = () => {
             },
             {}
         ).then((res: any) => {
-            console.log(res);
             if (res && res?.status) {
-                console.log(res.data);
                 setTimelineList(res.data);
             } else {
                 if (!res.showError) {
@@ -191,7 +189,6 @@ const EngineerTimelineListing = () => {
     };
 
     const categoryFilterTemplate = (options: any) => {
-        console.log(options);
         return <MultiSelect value={options.value} options={categoryOptions} onChange={(e) => options.filterCallback(e.value)} placeholder="Any" className="p-column-filter" />;
     };
 

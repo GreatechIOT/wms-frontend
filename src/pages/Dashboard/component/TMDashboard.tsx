@@ -31,7 +31,6 @@ const TMDashboard = () => {
     ChartJS.register(ChartDataZoom, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
     useEffect(() => {
-        console.log(date);
         let apiFunc = timelineService.getAvailability;
 
         callApi(
@@ -44,11 +43,7 @@ const TMDashboard = () => {
             },
             { year: moment(date).format('YYYY') }
         ).then((res: any) => {
-            console.log(res.data_format.datasets[0]);
-            console.log(res.data_format.datasets[1]);
-            console.log(res.data_format.title);
             if (res && res?.status) {
-                console.log(res);
                 res.data_format.datasets[0].backgroundColor = 'rgba(255, 206, 86, 0.8)';
                 res.data_format.datasets[1].backgroundColor = 'rgba(255, 99, 132, 0.8)';
                 res.data_format.datasets[2].backgroundColor = 'rgba(75, 192, 192, 0.8)';
@@ -156,9 +151,7 @@ const TMDashboard = () => {
     
 
     const handleBarClick = (event: any) => {
-        console.log(getDatasetAtEvent(chartRef?.current, event));
         const chartInstance: any = chartRef.current;
-        console.log(chartInstance);
         const activePoints = chartInstance.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
         if (activePoints.length) {
             const firstPoint = activePoints[0];

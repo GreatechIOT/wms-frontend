@@ -15,6 +15,7 @@ const AddEngineerTimeline = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [checked, setChecked] = useState<boolean>(false);
     const { privilege } = useUser();
+    const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
     const timelineService = new TimelineService();
     const navigate = useNavigate();
     const [isAddTimeline, setIsAddTimeline] = useState<boolean>(true);
@@ -27,7 +28,6 @@ const AddEngineerTimeline = () => {
 
     const onSubmit = (values: TimelineType) => {
         const userIdArray: number[] = values.members.map((item: MemberType) => item.id);
-        console.log(userIdArray);
 
         if (values?.timeline?.[1] === null) {
             let date = moment(values?.timeline?.[0]).endOf('W').toDate();
@@ -50,6 +50,8 @@ const AddEngineerTimeline = () => {
                 showSuccessToast(res?.message);
                 if (!checked) {
                     navigate('/SubordinateTimelineListing');
+                } else {
+                    setIsSubmitted(true);
                 }
             } else {
                 if (!res.showError) {
@@ -57,9 +59,6 @@ const AddEngineerTimeline = () => {
                 }
             }
         });
-        console.log(values.timeline);
-
-        console.log(values);
     };
 
     return (
@@ -67,7 +66,17 @@ const AddEngineerTimeline = () => {
             {!privilege ? (
                 <LoadingAnimation />
             ) : privilege && privilege?.add_timeline ? (
-                <TimelineForm initialValues={initialValues} onSubmit={onSubmit} loading={loading} setLoading={setLoading} isAddTimeline={isAddTimeline} checked={checked} setChecked={setChecked} />
+                <TimelineForm
+                    initialValues={initialValues}
+                    onSubmit={onSubmit}
+                    loading={loading}
+                    setLoading={setLoading}
+                    isAddTimeline={isAddTimeline}
+                    checked={checked}
+                    setChecked={setChecked}
+                    isSubmitted={isSubmitted}
+                    setIsSubmitted={setIsSubmitted}
+                />
             ) : (
                 <Access />
             )}

@@ -53,7 +53,6 @@ export const ForgetPassword = (props: any) => {
                     navigate('/login');
                     showSuccessToast(res.message);
                 } else {
-                    console.log('False');
                     showErrorToast(res?.message);
                 }
             } catch (error) {

@@ -1,7 +1,9 @@
 import { useLocation } from 'react-router-dom';
 import { BreadCrumb } from 'primereact/breadcrumb';
+import { useUser } from 'utilities/Context/UserContext';
 
 const AppBreadcrumb = (props: any) => {
+    const { privilege } = useUser();
     const urlBase = '#/';
     const location = useLocation();
 
@@ -12,9 +14,11 @@ const AppBreadcrumb = (props: any) => {
     let items;
 
     if (location.pathname === '/') {
-        items = [
-            { label: 'Home', url: urlBase + 'Home' }
-        ];
+        if (privilege?.view_dashboard) {
+            items = [{ label: 'Dashboard', url: urlBase + 'Dashboard' }];
+        } else {
+            items = [{ label: 'Subordinate Timeline Listing', url: urlBase + 'SubordinateTimelineListing' }];
+        }
     } else if (!activeRoute.length) {
         items = [{ label: '' }, { label: '' }];
     } else {

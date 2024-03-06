@@ -35,8 +35,6 @@ const EditEngineerTimeline = () => {
             { timeline_id: selectedTimeline.id }
         ).then((res: any) => {
             if (res && res?.status) {
-                console.log(res.data.user_id);
-                console.log(res.data.user.name);
                 setCategory_id(res.data.item.category.id);
                 let projectCategory = { project_category: { id: res.data.item.category.id, category_type: res.data.item.category.category_type } };
                 let projectID = { project_id: { id: res.data.item.id, item_name: res.data.item.item_name, item_description: res.data.item.item_description } };
@@ -47,7 +45,6 @@ const EditEngineerTimeline = () => {
                     ...prev,
                     ...values
                 }));
-                console.log(res.data);
             } else {
                 if (!res.showError) {
                     showErrorToast(res?.message);
@@ -83,7 +80,6 @@ const EditEngineerTimeline = () => {
                 }
             }
         });
-        console.log(values);
     };
     return <React.Fragment>{category_id && <TimelineForm initialValues={initialValues} onSubmit={onSubmit} loading={loading} setLoading={setLoading} isAddTimeline={isAddTimeline} category_id={category_id} />}</React.Fragment>;
 };
