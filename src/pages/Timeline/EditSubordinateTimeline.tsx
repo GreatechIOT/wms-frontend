@@ -6,7 +6,9 @@ import { callApi } from 'utilities/Function/CallAPI';
 import { useNavigate, useParams } from 'react-router-dom';
 import { showErrorToast, showSuccessToast } from 'utilities/Function/CustomToast';
 import moment from 'moment';
+import { DOCUMENT_TITLE } from 'utilities/Constant/DocumentTitleName';
 const EditEngineerTimeline = () => {
+    document.title = DOCUMENT_TITLE.Edit_Timeline;
     const selectedTimeline = useParams();
     const [loading, setLoading] = useState<boolean>(false);
     const timelineService = new TimelineService();

@@ -14,8 +14,10 @@ import { onGlobalFilterChange } from 'utilities/Function/DataTableKeywordSearch'
 import UserService from 'services/UserService';
 import { useNavigate } from 'react-router-dom';
 import { system_name } from 'config/ServerConfig';
+import { DOCUMENT_TITLE } from 'utilities/Constant/DocumentTitleName';
 
 const UserSettings = () => {
+    document.title = DOCUMENT_TITLE.User_Settings;
     const [username, setUsername] = useState<string>('');
     const [visibleEditUserPrivilege, setVisibleEditUserPrivilege] = useState(false);
     const [user_id, setUser_id] = useState<number | null>(null);

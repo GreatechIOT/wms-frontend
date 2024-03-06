@@ -21,8 +21,10 @@ import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { useUser } from 'utilities/Context/UserContext';
 import LoadingAnimation from 'utilities/Animation/LoadingAnimation';
 import { Access } from 'pages/LogFiles/Access';
+import { DOCUMENT_TITLE } from 'utilities/Constant/DocumentTitleName';
 
 const EngineerTimelineListing = () => {
+    document.title = DOCUMENT_TITLE.Timeline_Listing;
     const [globalFilterValue, setGlobalFilterValue] = useState<string>('');
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },

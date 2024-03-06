@@ -23,7 +23,7 @@ type TargetType = {
 };
 
 const Profile = () => {
-    // document.title = DocumentTitle.PROFILE;
+    document.title = DOCUMENT_TITLE.Profile;
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number>(0);

@@ -10,8 +10,10 @@ import moment from 'moment';
 import { useUser } from 'utilities/Context/UserContext';
 import LoadingAnimation from 'utilities/Animation/LoadingAnimation';
 import { Access } from 'pages/LogFiles/Access';
+import { DOCUMENT_TITLE } from 'utilities/Constant/DocumentTitleName';
 
 const AddEngineerTimeline = () => {
+    document.title = DOCUMENT_TITLE.Add_Timeline;
     const [loading, setLoading] = useState<boolean>(false);
     const [checked, setChecked] = useState<boolean>(false);
     const { privilege } = useUser();
