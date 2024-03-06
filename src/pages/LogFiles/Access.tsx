@@ -8,9 +8,14 @@ import accessDenied from '../../assets/lottie/aceessDenied.json';
 
 export const Access = (props: any) => {
     const navigate = useNavigate();
+    const { privilege } = useUser();
 
     const goHome = () => {
-        navigate('/Dashboard');
+        if (privilege?.view_dashboard) {
+            navigate('/Dashboard');
+        } else {
+            navigate('/SubordinateTimelineListing');
+        }
     };
 
     return (
@@ -26,7 +31,7 @@ export const Access = (props: any) => {
                     </h1>
                     <p style={{ maxWidth: '600px', fontSize: '13px' }}>You don't have permission to access.</p>
                     <div>
-                        <Button className="p-button-extra p-button-lg" type="button" label={'Go to Dashboard'} onClick={goHome} />
+                        <Button className="p-button-extra p-button-lg" type="button" label={privilege?.view_dashboard ? 'Go to Dashboard' : 'Go To Subordinate Timeline Listing'} onClick={goHome} />
                     </div>
                 </div>
             </div>

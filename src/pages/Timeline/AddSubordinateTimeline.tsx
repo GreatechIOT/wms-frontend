@@ -13,6 +13,7 @@ import { Access } from 'pages/LogFiles/Access';
 
 const AddEngineerTimeline = () => {
     const [loading, setLoading] = useState<boolean>(false);
+    const [checked, setChecked] = useState<boolean>(false);
     const { privilege } = useUser();
     const timelineService = new TimelineService();
     const navigate = useNavigate();
@@ -47,7 +48,9 @@ const AddEngineerTimeline = () => {
         ).then((res: any) => {
             if (res && res?.status) {
                 showSuccessToast(res?.message);
-                navigate('/SubordinateTimelineListing');
+                if (!checked) {
+                    navigate('/SubordinateTimelineListing');
+                }
             } else {
                 if (!res.showError) {
                     showErrorToast(res?.message);
@@ -61,7 +64,13 @@ const AddEngineerTimeline = () => {
 
     return (
         <React.Fragment>
-            {!privilege ? <LoadingAnimation /> : privilege && privilege?.add_timeline ? <TimelineForm initialValues={initialValues} onSubmit={onSubmit} loading={loading} setLoading={setLoading} isAddTimeline={isAddTimeline} /> : <Access />}
+            {!privilege ? (
+                <LoadingAnimation />
+            ) : privilege && privilege?.add_timeline ? (
+                <TimelineForm initialValues={initialValues} onSubmit={onSubmit} loading={loading} setLoading={setLoading} isAddTimeline={isAddTimeline} checked={checked} setChecked={setChecked} />
+            ) : (
+                <Access />
+            )}
         </React.Fragment>
     );
 };

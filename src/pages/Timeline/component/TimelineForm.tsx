@@ -2,6 +2,7 @@ import { useFormik } from 'formik';
 import moment from 'moment';
 import { addLocale } from 'primereact/api';
 import { Calendar } from 'primereact/calendar';
+import { Checkbox } from 'primereact/checkbox';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { MultiSelect } from 'primereact/multiselect';
@@ -27,8 +28,10 @@ interface TimelineProps {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
     isAddTimeline?: boolean;
     category_id?: any;
+    checked?: boolean | undefined;
+    setChecked?: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loading, setLoading, isAddTimeline, category_id }) => {
+const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loading, setLoading, isAddTimeline, category_id, checked, setChecked }) => {
     const minDate = new Date(2024, 0);
     const categoryService = new CategoryService();
     const itemService = new ItemService();
@@ -309,6 +312,12 @@ const TimelineForm: React.FC<TimelineProps> = ({ initialValues, onSubmit, loadin
                                 </div>
                                 <FormError touched={formik.touched.timeline} errors={formik.errors.timeline} />
                             </div>
+                            {isAddTimeline && (
+                            <div className="ml-2 mt-2">
+                                <Checkbox onChange={(e: any) => setChecked && setChecked(e?.checked)} checked={checked ?? false} />
+                                &nbsp; Add More Item
+                            </div>
+                        )}
                             <SubmitFormButton label="Submit" loading={loading} />
                         </div>
                     </form>

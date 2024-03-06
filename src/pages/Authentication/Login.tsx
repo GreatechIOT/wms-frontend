@@ -18,12 +18,14 @@ import logo from 'assets/images/wmsLogo.png';
 import greatechLogo from './../../assets/images/greatechLogo.png';
 import backgroundImg from './../../assets/images/wmsLoginWallpaper.png';
 import { system_name } from 'config/ServerConfig';
+import { useUser } from 'utilities/Context/UserContext';
 
 export const Login = (props: any) => {
     document.title = DOCUMENT_TITLE.Login;
     const navigate = useNavigate();
     const [loading, setLoading] = useState<boolean>(false);
     const userService = new UserService();
+    const { privilege } = useUser();
 
     const formikLogin = useFormik({
         initialValues: {
@@ -57,7 +59,12 @@ export const Login = (props: any) => {
 
                 if (res?.status) {
                     localStorage.setItem('wms_token', res?.data.token + '@' + res?.data.id);
-                    navigate('/Dashboard');
+                    if (privilege?.view_dashboard) {
+                        navigate('/Dashboard');
+                    } else {
+                        navigate('/SubordinateTimelineListing');
+                    }
+
                     showSuccessToast(res?.message + '.');
                 } else {
                     showErrorToast(res?.message);
