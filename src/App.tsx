@@ -28,6 +28,7 @@ import UserSettings from 'pages/User/UserSettings';
 import { useUser } from 'utilities/Context/UserContext';
 import { UserMenuOptions } from 'utilities/Function/UserMenuOptions';
 import { MenuItem } from 'primereact/menuitem';
+import { getToken } from 'utilities/Function/GetLocalStorage';
 
 const App = (props: any) => {
     const [rightMenuActive, setRightMenuActive] = useState(false);

@@ -25,7 +25,7 @@ export const Login = (props: any) => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState<boolean>(false);
     const userService = new UserService();
-    const { privilege } = useUser();
+    // const { privilege } = useUser();
 
     const formikLogin = useFormik({
         initialValues: {
@@ -59,7 +59,9 @@ export const Login = (props: any) => {
 
                 if (res?.status) {
                     localStorage.setItem('wms_token', res?.data.token + '@' + res?.data.id);
-                    if (privilege?.view_dashboard) {
+                    // console.log(res.data);
+                    const privilege = JSON.parse(res.data?.privilege);
+                    if (privilege?.[0].WMS?.view_dashboard) {
                         navigate('/Dashboard');
                     } else {
                         navigate('/SubordinateTimelineListing');

@@ -72,7 +72,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 navigate('/login');
             }
         }
-    }, []);
+    }, [getToken()]);
 
     return <UserContext.Provider value={{ userDetail, setUserDetail, privilege }}>{children}</UserContext.Provider>;
 };
