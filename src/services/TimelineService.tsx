@@ -44,4 +44,8 @@ export default class TimelineService {
     getAvailability(values: any) {
         return axiosInstance.post(`${url}/getAvailability`, values).then((res) => res.data);
     }
+
+    heatmap(values: any) {
+        return axiosInstance.post(`${url}/heatmap`, values).then((res) => res.data);
+    }
 }

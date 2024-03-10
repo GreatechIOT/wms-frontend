@@ -146,9 +146,8 @@ const TMDashboard = () => {
     //     };
     //     setBarChartData(data);
     //     setBarChartOptions(stackedBarChartOption);
-      
+
     // }, [])
-    
 
     const handleBarClick = (event: any) => {
         const chartInstance: any = chartRef.current;
@@ -168,43 +167,45 @@ const TMDashboard = () => {
 
     return (
         <React.Fragment>
-            <Dialog header={workweek} visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-                <div>
-                    Label: {label} &nbsp; Value: {value}
-                </div>
-            </Dialog>
-            <div className="grid">
-                <div className="col-12">
-                    <div className="card">
+            {loading ? (
+                <LoadingAnimation />
+            ) : (
+                <>
+                    <Dialog header={workweek} visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
                         <div>
-                            <Calendar
-                                className="w-full md:w-15rem"
-                                style={{
-                                    backgroundColor: 'white',
-                                    borderBottom: '1px solid #ccc',
-                                    borderRadius: '4px',
-                                    outline: 'none'
-                                }}
-                                value={date}
-                                onChange={(e: any) => setDate(e.value)}
-                                view="year"
-                                dateFormat="yy"
-                                placeholder="Select a Year"
-                                showIcon
-                                //maxDate={maxDate}
-                                minDate={minDate}
-                                disabled={loading}
-                            />
+                            Label: {label} &nbsp; Value: {value}
                         </div>
-                        {loading ? (
-                            <LoadingAnimation />
-                        ) : (
-                            // barChartData && barChartOptions && <Bar ref={chartRef} onClick={handleBarClick} options={barChartOptions} data={barChartData} />
-                            barChartData && barChartOptions && <Bar ref={chartRef} options={barChartOptions} data={barChartData} />
-                        )}
+                    </Dialog>
+                    <div className="grid">
+                        <div className="col-12">
+                            <div className="card">
+                                <div>
+                                    <Calendar
+                                        className="w-full md:w-15rem"
+                                        style={{
+                                            backgroundColor: 'white',
+                                            borderBottom: '1px solid #ccc',
+                                            borderRadius: '4px',
+                                            outline: 'none'
+                                        }}
+                                        value={date}
+                                        onChange={(e: any) => setDate(e.value)}
+                                        view="year"
+                                        dateFormat="yy"
+                                        placeholder="Select a Year"
+                                        showIcon
+                                        //maxDate={maxDate}
+                                        minDate={minDate}
+                                        disabled={loading}
+                                    />
+                                </div>
+
+                                {barChartData && barChartOptions && <Bar ref={chartRef} options={barChartOptions} data={barChartData} />}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </>
+            )}
         </React.Fragment>
     );
 };

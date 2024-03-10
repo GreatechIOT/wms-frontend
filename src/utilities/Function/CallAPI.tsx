@@ -29,7 +29,6 @@ export function callApi<T>({ apiFunc, setLoading, navigateToLogin }: CallApiOpti
             if (setLoading) {
                 setLoading(false);
             }
-
             return { message: err.message, status: false };
         });
 }

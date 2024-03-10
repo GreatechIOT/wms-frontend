@@ -5,3 +5,22 @@
 .p-calendar .p-inputtext {
     background-color: white;
 }
+
+.th.p-datepicker-weekheader{
+    font-weight: bold;
+    color: black;
+}
+
+.p-datepicker-weeknumber .p-disabled{
+
+    
+    background-color: rgba(255, 206, 86, 0.9);
+    color: black;
+    font-weight:bold;
+    
+}
+
+// .p-datepicker table th > span {
+//     background-color: cyan;
+//     color: black;
+// }

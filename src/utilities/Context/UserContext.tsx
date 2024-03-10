@@ -25,8 +25,6 @@ interface UserContextType {
     privilege: any; // Modify the type according to the privilege data structure
 }
 
-
-
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -72,7 +70,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 navigate('/login');
             }
         }
-    }, [getToken()]);
+    }, []);
 
     return <UserContext.Provider value={{ userDetail, setUserDetail, privilege }}>{children}</UserContext.Provider>;
 };

@@ -81,7 +81,7 @@ const AppWrapper = (props: any) => {
     };
 
     return (
-        <UserProvider>
+        <>
             <ToastContainer />
             <Routes>
                 <Route path="/login" element={<Login colorScheme={colorScheme} />} />
@@ -90,10 +90,14 @@ const AppWrapper = (props: any) => {
 
                 <Route
                     path="*"
-                    element={<App colorScheme={colorScheme} onColorSchemeChange={onColorSchemeChange} componentTheme={componentTheme} onComponentThemeChange={onComponentThemeChange} theme={theme} onMenuThemeChange={onMenuThemeChange} />}
+                    element={
+                        <UserProvider>
+                            <App colorScheme={colorScheme} onColorSchemeChange={onColorSchemeChange} componentTheme={componentTheme} onComponentThemeChange={onComponentThemeChange} theme={theme} onMenuThemeChange={onMenuThemeChange} />
+                        </UserProvider>
+                    }
                 />
             </Routes>
-        </UserProvider>
+        </>
     );
 };
 
