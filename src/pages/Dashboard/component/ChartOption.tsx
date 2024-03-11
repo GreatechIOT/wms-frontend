@@ -90,7 +90,14 @@ export const heatMapOption = () => {
                     console.log(el, seriesIndex, dataPointIndex, seriesName);
                     console.log(seriesIndex);
                 }
+            },
+            animations: {
+                enabled: false
+            },
+            toolbar:{
+                show: false
             }
+            
         },
 
         toolbar: {
@@ -123,21 +130,21 @@ export const heatMapOption = () => {
                         {
                             from: 0,
                             to: 0,
-                            color: documentStyle.getPropertyValue('--green-500'),
+                            color: '#6895D2',
                             // Set your desired color for 0
                             name: 'Available'
                         },
                         {
                             from: 1,
                             to: 1, // Assuming your data goes up to 31
-                            color: '#ED3836',
+                            color: '#D04848',
                             //color: '#F8C146', // Set your desired color for non-zero values
                             name: 'Project'
                         },
                         {
                             from: 2,
                             to: 2, // Assuming your data goes up to 31
-                            color: documentStyle.getPropertyValue('--orange-500'), // Set your desired color for non-zero values
+                            color: '#F3B95F', // Set your desired color for non-zero values
                             name: 'RFQ'
                         }
                     ]
@@ -145,7 +152,7 @@ export const heatMapOption = () => {
             }
         },
         dataLabels: {
-            enabled: true,
+            enabled: false,
             enabledOnSeries: undefined,
             formatter: function (val: any, opts: any) {
                 if (val === 0) {
@@ -182,6 +189,7 @@ export const heatMapOption = () => {
                 );
             }
         },
+
         yaxis: {
             max: 100,
             reversed: true,

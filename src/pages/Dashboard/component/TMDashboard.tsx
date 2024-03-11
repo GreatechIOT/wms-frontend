@@ -44,9 +44,9 @@ const TMDashboard = () => {
             { year: moment(date).format('YYYY') }
         ).then((res: any) => {
             if (res && res?.status) {
-                res.data_format.datasets[0].backgroundColor = 'rgba(255, 206, 86, 0.8)';
-                res.data_format.datasets[1].backgroundColor = 'rgba(255, 99, 132, 0.8)';
-                res.data_format.datasets[2].backgroundColor = 'rgba(75, 192, 192, 0.8)';
+                res.data_format.datasets[0].backgroundColor = '#D04848';
+                res.data_format.datasets[1].backgroundColor = '#F3B95F';
+                res.data_format.datasets[2].backgroundColor = '#6895D2';
 
                 const data = {
                     labels: res.data_format.title,
