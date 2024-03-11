@@ -10,5 +10,6 @@ export const EmployeeRole = {
     M2: 'M2',
     M3: 'M3',
     M4: 'M4',
-    Top_Management: 'Top Management'
+    Top_Management: 'Top Management',
+    CEO: 'CEO'
 };

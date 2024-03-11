@@ -62,7 +62,7 @@ export const Login = (props: any) => {
                     // console.log(res.data);
                     const privilege = JSON.parse(res.data?.privilege);
                     if (privilege?.[0].WMS?.view_dashboard) {
-                        navigate('/Dashboard');
+                        navigate('/TeamProjectAllocation');
                     } else {
                         navigate('/SubordinateTimelineListing');
                     }
@@ -83,7 +83,7 @@ export const Login = (props: any) => {
         if (isMounted) {
             setLoading(true);
             if (getToken() !== null) {
-                navigate('/Dashboard');
+                navigate('/TeamProjectAllocation');
             } else {
                 setLoading(false);
             }

@@ -12,7 +12,7 @@ export const Access = (props: any) => {
 
     const goHome = () => {
         if (privilege?.view_dashboard) {
-            navigate('/Dashboard');
+            navigate('/TeamProjectAllocation');
         } else {
             navigate('/SubordinateTimelineListing');
         }

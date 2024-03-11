@@ -10,7 +10,7 @@ import LoadingAnimation from 'utilities/Animation/LoadingAnimation';
 import { Calendar } from 'primereact/calendar';
 import moment from 'moment';
 
-const BUMDashboard = () => {
+const TeamProjectAllocation = () => {
     const options = heatMapOption();
     const timelineService = new TimelineService();
     const [loading, setLoading] = useState(false);
@@ -99,4 +99,4 @@ const BUMDashboard = () => {
     );
 };
 
-export default BUMDashboard;
+export default TeamProjectAllocation;

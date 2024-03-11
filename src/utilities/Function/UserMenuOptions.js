@@ -8,8 +8,24 @@ export const UserMenuOptions = (privilege, job_title) => {
         const dashboardMenu = {
             label: 'Dashboard',
             icon: 'pi pi-chart-bar',
-            to: '/Dashboard'
+            items: []
         };
+
+        if(privilege?.view_dashboard && job_title === EmployeeRole.M3){
+            dashboardMenu.items.push({
+                label: 'Team Project Allocation',
+                icon: 'pi pi-table',
+                to: '/TeamProjectAllocation'
+            })
+        }
+
+        if((privilege?.view_dashboard && job_title === EmployeeRole.M3) || (privilege?.view_dashboard && job_title === EmployeeRole.CEO)){
+            dashboardMenu.items.push({
+                label: 'Weekly Manpower Overview',
+                icon: 'pi pi-chart-bar',
+                to: '/WeeklyManpowerOverview'
+            })
+        }
 
         menuItem.push(dashboardMenu);
     }

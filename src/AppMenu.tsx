@@ -209,10 +209,10 @@ const AppMenu = (props: any) => {
         >
             <div className="menu-logo">
                 <button className="logo p-link">
-                    <img src={logo} alt="logo" onClick={() => navigate('/Dashboard')} />
+                    <img src={logo} alt="logo" onClick={() => navigate('/TeamProjectAllocation')} />
                 </button>
                 <div className="app-name p-link">
-                    <p className="ml-3" style={{ fontSize: '1.6em' }} onClick={() => navigate('/Dashboard')}>
+                    <p className="ml-3" style={{ fontSize: '1.6em' }} onClick={() => navigate('/TeamProjectAllocation')}>
                     WMS
                     </p>
                 </div>

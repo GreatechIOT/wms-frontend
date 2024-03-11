@@ -14,7 +14,7 @@ export const Permission: React.FC<PermissionProps> = ({ action }) => {
     const navigate = useNavigate();
 
     const goHome = () => {
-        navigate('/Dashboard');
+        navigate('/TeamProjectAllocation');
     };
 
     const actionCase = () => {

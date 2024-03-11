@@ -14,7 +14,7 @@ import moment from 'moment';
 
 import { Player } from '@lottiefiles/react-lottie-player';
 import LoadingAnimation from 'utilities/Animation/LoadingAnimation';
-const TMDashboard = () => {
+const WeeklyManpowerOverview = () => {
     const [barChartData, setBarChartData] = useState<any>(null);
     const [barChartOptions, setBarChartOptions] = useState<any>(null);
     const chartRef: any = useRef(null);
@@ -210,4 +210,4 @@ const TMDashboard = () => {
     );
 };
 
-export default TMDashboard;
+export default WeeklyManpowerOverview;
