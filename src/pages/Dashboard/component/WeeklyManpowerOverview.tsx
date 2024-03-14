@@ -12,8 +12,10 @@ import { useNavigate } from 'react-router-dom';
 import { showErrorToast } from 'utilities/Function/CustomToast';
 import moment from 'moment';
 
-import { Player } from '@lottiefiles/react-lottie-player';
 import LoadingAnimation from 'utilities/Animation/LoadingAnimation';
+import { useUser } from 'utilities/Context/UserContext';
+import { EmployeeRole } from 'utilities/Constant/ConstantRole';
+import { Access } from 'pages/LogFiles/Access';
 const WeeklyManpowerOverview = () => {
     const [barChartData, setBarChartData] = useState<any>(null);
     const [barChartOptions, setBarChartOptions] = useState<any>(null);
@@ -28,6 +30,7 @@ const WeeklyManpowerOverview = () => {
     const maxDate = new Date();
     const minDate = new Date(2024, 0);
     const timelineService = new TimelineService();
+    const { privilege, userDetail } = useUser();
     ChartJS.register(ChartDataZoom, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
     useEffect(() => {
@@ -44,9 +47,9 @@ const WeeklyManpowerOverview = () => {
             { year: moment(date).format('YYYY') }
         ).then((res: any) => {
             if (res && res?.status) {
-                res.data_format.datasets[0].backgroundColor = '#D04848';
-                res.data_format.datasets[1].backgroundColor = '#F3B95F';
-                res.data_format.datasets[2].backgroundColor = '#6895D2';
+                res.data_format.datasets[0].backgroundColor = '#D9534F';
+                res.data_format.datasets[1].backgroundColor = '#FFAD60';
+                res.data_format.datasets[2].backgroundColor = '#B0C5A4';
 
                 const data = {
                     labels: res.data_format.title,
@@ -167,44 +170,52 @@ const WeeklyManpowerOverview = () => {
 
     return (
         <React.Fragment>
-            {loading ? (
+            {!privilege ? (
                 <LoadingAnimation />
-            ) : (
+            ) : (privilege && privilege?.view_dashboard && userDetail?.job_title === EmployeeRole.CEO) || (privilege && privilege?.view_dashboard && userDetail?.job_title === EmployeeRole.M3) ? (
                 <>
-                    <Dialog header={workweek} visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-                        <div>
-                            Label: {label} &nbsp; Value: {value}
-                        </div>
-                    </Dialog>
-                    <div className="grid">
-                        <div className="col-12">
-                            <div className="card">
+                    {loading ? (
+                        <LoadingAnimation />
+                    ) : (
+                        <>
+                            <Dialog header={workweek} visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
                                 <div>
-                                    <Calendar
-                                        className="w-full md:w-15rem"
-                                        style={{
-                                            backgroundColor: 'white',
-                                            borderBottom: '1px solid #ccc',
-                                            borderRadius: '4px',
-                                            outline: 'none'
-                                        }}
-                                        value={date}
-                                        onChange={(e: any) => setDate(e.value)}
-                                        view="year"
-                                        dateFormat="yy"
-                                        placeholder="Select a Year"
-                                        showIcon
-                                        //maxDate={maxDate}
-                                        minDate={minDate}
-                                        disabled={loading}
-                                    />
+                                    Label: {label} &nbsp; Value: {value}
                                 </div>
+                            </Dialog>
+                            <div className="grid">
+                                <div className="col-12">
+                                    <div className="card">
+                                        <div>
+                                            <Calendar
+                                                className="w-full md:w-15rem"
+                                                style={{
+                                                    backgroundColor: 'white',
+                                                    borderBottom: '1px solid #ccc',
+                                                    borderRadius: '4px',
+                                                    outline: 'none'
+                                                }}
+                                                value={date}
+                                                onChange={(e: any) => setDate(e.value)}
+                                                view="year"
+                                                dateFormat="yy"
+                                                placeholder="Select a Year"
+                                                showIcon
+                                                //maxDate={maxDate}
+                                                minDate={minDate}
+                                                disabled={loading}
+                                            />
+                                        </div>
 
-                                {barChartData && barChartOptions && <Bar ref={chartRef} options={barChartOptions} data={barChartData} />}
+                                        {barChartData && barChartOptions && <Bar ref={chartRef} options={barChartOptions} data={barChartData} />}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </>
+                    )}
                 </>
+            ) : (
+                <Access />
             )}
         </React.Fragment>
     );

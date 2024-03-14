@@ -130,21 +130,21 @@ export const heatMapOption = () => {
                         {
                             from: 0,
                             to: 0,
-                            color: '#6895D2',
+                            color: '#B0C5A4',
                             // Set your desired color for 0
                             name: 'Available'
                         },
                         {
                             from: 1,
                             to: 1, // Assuming your data goes up to 31
-                            color: '#D04848',
+                            color: '#D9534F',
                             //color: '#F8C146', // Set your desired color for non-zero values
                             name: 'Project'
                         },
                         {
                             from: 2,
                             to: 2, // Assuming your data goes up to 31
-                            color: '#F3B95F', // Set your desired color for non-zero values
+                            color: '#FFAD60', // Set your desired color for non-zero values
                             name: 'RFQ'
                         }
                     ]

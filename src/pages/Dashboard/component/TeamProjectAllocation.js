@@ -9,6 +9,9 @@ import { showErrorToast } from 'utilities/Function/CustomToast';
 import LoadingAnimation from 'utilities/Animation/LoadingAnimation';
 import { Calendar } from 'primereact/calendar';
 import moment from 'moment';
+import { useUser } from 'utilities/Context/UserContext';
+import { EmployeeRole } from 'utilities/Constant/ConstantRole';
+import { Access } from 'pages/LogFiles/Access';
 
 const TeamProjectAllocation = () => {
     const options = heatMapOption();
@@ -22,6 +25,7 @@ const TeamProjectAllocation = () => {
     const [date, setDate] = useState(new Date());
     const minDate = new Date(2024, 0);
     const navigate = useNavigate();
+    const { privilege, userDetail } = useUser();
 
     const getSeriesWithPage = (series, firstNumber) => {
         const seriesArray = series.slice(firstNumber, firstNumber + rows);
@@ -62,40 +66,48 @@ const TeamProjectAllocation = () => {
         getSeriesWithPage(filteredSeriesArray, first);
     };
     return (
-        <>
-            {loading ? (
+        <React.Fragment>
+            {!privilege ? (
                 <LoadingAnimation />
-            ) : (
-                <div className="grid">
-                    <div className="col-12">
-                        <div className="card">
-                        <div>
-                                    <Calendar
-                                        className="w-full md:w-15rem"
-                                        style={{
-                                            backgroundColor: 'white',
-                                            borderBottom: '1px solid #ccc',
-                                            borderRadius: '4px',
-                                            outline: 'none'
-                                        }}
-                                        value={date}
-                                        onChange={(e) => setDate(e.value)}
-                                        view="year"
-                                        dateFormat="yy"
-                                        placeholder="Select a Year"
-                                        showIcon
-                                        //maxDate={maxDate}
-                                        minDate={minDate}
-                                        disabled={loading}
-                                    />
+            ) : privilege && privilege?.view_dashboard && userDetail?.job_title === EmployeeRole.M3 ? (
+                <>
+                    {loading ? (
+                        <LoadingAnimation />
+                    ) : (
+                        <div className="grid">
+                            <div className="col-12">
+                                <div className="card">
+                                    <div>
+                                        <Calendar
+                                            className="w-full md:w-15rem"
+                                            style={{
+                                                backgroundColor: 'white',
+                                                borderBottom: '1px solid #ccc',
+                                                borderRadius: '4px',
+                                                outline: 'none'
+                                            }}
+                                            value={date}
+                                            onChange={(e) => setDate(e.value)}
+                                            view="year"
+                                            dateFormat="yy"
+                                            placeholder="Select a Year"
+                                            showIcon
+                                            //maxDate={maxDate}
+                                            minDate={minDate}
+                                            disabled={loading}
+                                        />
+                                    </div>
+                                    <ReactApexChart options={options} series={seriesArray} type="heatmap" height="700vh" />
+                                    <Paginator first={firstNumber} rows={rows} totalRecords={filteredSeriesArray.length} onPageChange={onPageChange} />
                                 </div>
-                            <ReactApexChart options={options} series={seriesArray} type="heatmap" height="700vh" />
-                            <Paginator first={firstNumber} rows={rows} totalRecords={filteredSeriesArray.length} onPageChange={onPageChange} />
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    )}
+                </>
+            ) : (
+                <Access />
             )}
-        </>
+        </React.Fragment>
     );
 };
 

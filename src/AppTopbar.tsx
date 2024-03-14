@@ -5,9 +5,10 @@ import { classNames } from 'primereact/utils';
 import logo from './assets/images/wmsLogo.png';
 import { clearLocalStorage } from 'utilities/Function/ClearLocalStorage';
 import { useUser } from 'utilities/Context/UserContext';
+import { EmployeeRole } from 'utilities/Constant/ConstantRole';
 
 const AppTopbar = (props: any) => {
-    const { userDetail } = useUser();
+    const { privilege, userDetail } = useUser();
     const onTopbarSubItemClick = (event: any) => {
         event.preventDefault();
     };
@@ -22,12 +23,31 @@ const AppTopbar = (props: any) => {
                         <i className="pi pi-bars"></i>
                     </button>
 
-                    <button className="logo p-link" onClick={() => navigate('/TeamProjectAllocation')}>
+                    <button
+                        className="logo p-link"
+                        onClick={() => {
+                            if (privilege?.view_dashboard) {
+                                navigate('/WeeklyManpowerOverview');
+                            } else {
+                                navigate('/SubordinateTimelineListing');
+                            }
+                        }}
+                    >
                         <img src={logo} alt="logo" />
                     </button>
 
                     {/* <button className="app-name p-link" onClick={() => navigate('/')}> */}
-                    <p className="ml-3 p-link" style={{ fontSize: '1.6em' }} onClick={() => navigate('/TeamProjectAllocation')}>
+                    <p
+                        className="ml-3 p-link"
+                        style={{ fontSize: '1.6em' }}
+                        onClick={() => {
+                            if (privilege?.view_dashboard) {
+                                navigate('/WeeklyManpowerOverview');
+                            } else {
+                                navigate('/SubordinateTimelineListing');
+                            }
+                        }}
+                    >
                         WMS
                     </p>
                     {/* </button> */}

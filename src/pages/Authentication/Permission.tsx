@@ -4,6 +4,8 @@ import logo from 'assets/images/wmsLogo.png';
 import { Button } from 'primereact/button';
 import { ACCESS, ERROR, NOTFOUND } from 'utilities/Constant/ConstantName';
 import { DOCUMENT_TITLE } from 'utilities/Constant/DocumentTitleName';
+import { useUser } from 'utilities/Context/UserContext';
+import { EmployeeRole } from 'utilities/Constant/ConstantRole';
 
 interface PermissionProps {
     action: string;
@@ -12,9 +14,14 @@ interface PermissionProps {
 export const Permission: React.FC<PermissionProps> = ({ action }) => {
     document.title = DOCUMENT_TITLE.Permission;
     const navigate = useNavigate();
+    const { privilege, userDetail } = useUser();
 
     const goHome = () => {
-        navigate('/TeamProjectAllocation');
+        if (privilege?.view_dashboard) {
+            navigate('/WeeklyManpowerOverview');
+        } else {
+            navigate('/SubordinateTimelineListing');
+        }
     };
 
     const actionCase = () => {
@@ -56,7 +63,7 @@ export const Permission: React.FC<PermissionProps> = ({ action }) => {
             <div className="exception-footer">
                 <img src={logo} className="exception-logo" alt="exception-logo" />
                 <p className="exception-appname" style={{ fontSize: '1.3em' }}>
-                WMS
+                    WMS
                 </p>
             </div>
         </div>

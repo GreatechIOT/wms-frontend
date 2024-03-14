@@ -19,6 +19,7 @@ import greatechLogo from './../../assets/images/greatechLogo.png';
 import backgroundImg from './../../assets/images/wmsLoginWallpaper.png';
 import { system_name } from 'config/ServerConfig';
 import { useUser } from 'utilities/Context/UserContext';
+import { EmployeeRole } from 'utilities/Constant/ConstantRole';
 
 export const Login = (props: any) => {
     document.title = DOCUMENT_TITLE.Login;
@@ -59,10 +60,10 @@ export const Login = (props: any) => {
 
                 if (res?.status) {
                     localStorage.setItem('wms_token', res?.data.token + '@' + res?.data.id);
-                    // console.log(res.data);
+                    console.log(res.data.job_title);
                     const privilege = JSON.parse(res.data?.privilege);
                     if (privilege?.[0].WMS?.view_dashboard) {
-                        navigate('/TeamProjectAllocation');
+                        navigate('/WeeklyManpowerOverview');
                     } else {
                         navigate('/SubordinateTimelineListing');
                     }
@@ -83,7 +84,7 @@ export const Login = (props: any) => {
         if (isMounted) {
             setLoading(true);
             if (getToken() !== null) {
-                navigate('/TeamProjectAllocation');
+                navigate('/WeeklyManpowerOverview');
             } else {
                 setLoading(false);
             }

@@ -1,4 +1,3 @@
-import React from 'react';
 import { EmployeeRole } from 'utilities/Constant/ConstantRole';
 
 export const UserMenuOptions = (privilege, job_title) => {
@@ -7,11 +6,11 @@ export const UserMenuOptions = (privilege, job_title) => {
     if (privilege?.view_dashboard) {
         const dashboardMenu = {
             label: 'Dashboard',
-            icon: 'pi pi-chart-bar',
+            icon: 'pi pi-chart-pie',
             items: []
         };
 
-        if(privilege?.view_dashboard && job_title === EmployeeRole.M3){
+        if(privilege?.view_dashboard && job_title !== EmployeeRole.CEO){
             dashboardMenu.items.push({
                 label: 'Team Project Allocation',
                 icon: 'pi pi-table',
@@ -19,7 +18,7 @@ export const UserMenuOptions = (privilege, job_title) => {
             })
         }
 
-        if((privilege?.view_dashboard && job_title === EmployeeRole.M3) || (privilege?.view_dashboard && job_title === EmployeeRole.CEO)){
+        if((privilege?.view_dashboard) ){
             dashboardMenu.items.push({
                 label: 'Weekly Manpower Overview',
                 icon: 'pi pi-chart-bar',

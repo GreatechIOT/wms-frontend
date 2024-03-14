@@ -5,11 +5,14 @@ import { classNames } from 'primereact/utils';
 import AppInlineMenu from './AppInlineMenu';
 import { Ripple } from 'primereact/ripple';
 import { Badge } from 'primereact/badge';
-import logo from "./assets/images/wmsLogo.png"
-import "./css/SideBarHighlight.css"
+import logo from './assets/images/wmsLogo.png';
+import './css/SideBarHighlight.css';
+import { useUser } from 'utilities/Context/UserContext';
+import { EmployeeRole } from 'utilities/Constant/ConstantRole';
 
 const AppSubmenu = forwardRef((props: any, ref: any) => {
     const [activeIndex, setActiveIndex] = useState<any>(null);
+    const { privilege, userDetail } = useUser();
 
     const onMenuItemClick = (event: any, item: any, index: any) => {
         if (item.disabled) {
@@ -189,6 +192,7 @@ const AppSubmenu = forwardRef((props: any, ref: any) => {
 
 const AppMenu = (props: any) => {
     const navigate = useNavigate();
+    const { privilege, userDetail } = useUser();
 
     const isOverlay = () => {
         return props.menuMode === 'overlay';
@@ -209,11 +213,31 @@ const AppMenu = (props: any) => {
         >
             <div className="menu-logo">
                 <button className="logo p-link">
-                    <img src={logo} alt="logo" onClick={() => navigate('/TeamProjectAllocation')} />
+                    <img
+                        src={logo}
+                        alt="logo"
+                        onClick={() => {
+                            if (privilege?.view_dashboard) {
+                                navigate('/WeeklyManpowerOverview');
+                            } else {
+                                navigate('/SubordinateTimelineListing');
+                            }
+                        }}
+                    />
                 </button>
                 <div className="app-name p-link">
-                    <p className="ml-3" style={{ fontSize: '1.6em' }} onClick={() => navigate('/TeamProjectAllocation')}>
-                    WMS
+                    <p
+                        className="ml-3"
+                        style={{ fontSize: '1.6em' }}
+                        onClick={() => {
+                            if (privilege?.view_dashboard) {
+                                navigate('/WeeklyManpowerOverview');
+                            } else {
+                                navigate('/SubordinateTimelineListing');
+                            }
+                        }}
+                    >
+                        WMS
                     </p>
                 </div>
                 <button className="menu-pin p-link" onClick={props.onToggleMenu}>

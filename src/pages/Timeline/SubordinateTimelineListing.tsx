@@ -223,15 +223,16 @@ const EngineerTimelineListing = () => {
                                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} projects"
                                         emptyMessage="No project found."
                                         loading={loading}
-                                        rowGroupMode="subheader"
-                                        groupRowsBy="user.name"
-                                        expandableRowGroups
-                                        rowGroupHeaderTemplate={headerTemplate}
-                                        expandedRows={expandedRows}
-                                        onRowToggle={(e: any) => setExpandedRows(e.data)}
+                                        // rowGroupMode="subheader"
+                                        // groupRowsBy="user.name"
+                                        // expandableRowGroups
+                                        // rowGroupHeaderTemplate={headerTemplate}
+                                        // expandedRows={expandedRows}
+                                        // onRowToggle={(e: any) => setExpandedRows(e.data)}
                                         sortField="user.name"
                                     >
-                                        <Column
+                                        <Column field="user.name" header="Member" />
+                                        {/* <Column
                                             field="item.category.category_type"
                                             header="Project Category"
                                             filterField="item.category.category_type"
@@ -244,7 +245,7 @@ const EngineerTimelineListing = () => {
                                         <Column field="item.item_name" header="Project ID" />
                                         <Column field="item.item_description" header="Project Description" body={descriptionBodyTemplate} />
 
-                                        <Column field="end_date" body={timelineBodyTemplate} header="Timeline" sortable />
+                                        <Column field="end_date" body={timelineBodyTemplate} header="Timeline" sortable /> */}
                                         {privilege && privilege?.edit_timeline && <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyTemplate} />}
                                     </DataTable>
                                 </div>

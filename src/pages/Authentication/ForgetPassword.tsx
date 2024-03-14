@@ -67,7 +67,7 @@ export const ForgetPassword = (props: any) => {
         if (isMounted) {
             setLoading(true);
             if (getToken() !== null) {
-                navigate('/TeamProjectAllocation');
+                navigate('/WeeklyManpowerOverview');
             } else {
                 setLoading(false);
             }

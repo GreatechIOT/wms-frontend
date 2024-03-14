@@ -31,6 +31,7 @@ import { MenuItem } from 'primereact/menuitem';
 import { getToken } from 'utilities/Function/GetLocalStorage';
 import TeamProjectAllocation from 'pages/Dashboard/component/TeamProjectAllocation';
 import WeeklyManpowerOverview from 'pages/Dashboard/component/WeeklyManpowerOverview';
+import NewGanttChart from 'pages/GanttChart/NewGanttChart';
 
 const App = (props: any) => {
     const [rightMenuActive, setRightMenuActive] = useState(false);
@@ -61,9 +62,9 @@ const App = (props: any) => {
     }, [privilege]);
 
     const routes = [
-        { parent: 'Dashboard', label: 'Dashboard', parent_url: 'Dashboard', label_url: 'Dashboard' },
-        { parent: 'Dashboard', label: 'Team Project Allocation', parent_url: 'Dashboard', label_url: 'TeamProjectAllocation' },
-        { parent: 'Dashboard', label: 'Weekly Manpower Overview', parent_url: 'Dashboard', label_url: 'WeeklyManpowerOverview' },
+        // { parent: 'Dashboard', label: 'Dashboard', parent_url: 'Dashboard', label_url: 'Dashboard' },
+        { parent: 'Weekly Manpower Overview', label: 'Team Project Allocation', parent_url: 'WeeklyManpowerOverview', label_url: 'TeamProjectAllocation' },
+        { parent: 'Weekly Manpower Overview', label: 'Weekly Manpower Overview', parent_url: 'WeeklyManpowerOverview', label_url: 'WeeklyManpowerOverview' },
         { parent: 'Subordinate Timeline Listing', label: 'Add Subordinate Timeline', parent_url: 'SubordinateTimelineListing', label_url: 'AddSubordinateTimeline' },
         { parent: 'Subordinate Timeline Listing', label: 'Edit Subordinate Timeline', parent_url: 'SubordinateTimelineListing', label_url: 'EditSubordinateTimeline' },
         { parent: 'Subordinate Timeline Listing', label: 'Subordinate Timeline Listing', parent_url: 'SubordinateTimelineListing', label_url: 'SubordinateTimelineListing' },
@@ -344,9 +345,9 @@ const App = (props: any) => {
                         {privilege?.view_dashboard ? <Route path="/" element={<Dashboard />} /> : <Route path="/" element={<AddSubordinateTimeline />} />}
 
                         <Route path="/GanttChart" element={<GanttChart />} />
-                        <Route path="/Dashboard" element={<Dashboard />} />
+                        {/* <Route path="/Dashboard" element={<Dashboard />} /> */}
                         <Route path="/TeamProjectAllocation" element={<TeamProjectAllocation />} />
-                        <Route path="/WeeklyManpowerOverview" element={<WeeklyManpowerOverview />} />
+                        <Route path="/WeeklyManpowerOverview" element={<Dashboard />} />
                         <Route path="/AddSubordinateTimeline" element={<AddSubordinateTimeline />} />
                         <Route path="/EditSubordinateTimeline/:id" element={<EditSubordinateTimeline />} />
                         <Route path="/SubordinateTimelineListing" element={<SubordinateTimelineListing />} />

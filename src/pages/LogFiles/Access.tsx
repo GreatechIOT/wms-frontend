@@ -5,14 +5,15 @@ import { Player } from '@lottiefiles/react-lottie-player';
 import { Button } from 'primereact/button';
 import { useUser } from 'utilities/Context/UserContext';
 import accessDenied from '../../assets/lottie/aceessDenied.json';
+import { EmployeeRole } from 'utilities/Constant/ConstantRole';
 
 export const Access = (props: any) => {
     const navigate = useNavigate();
-    const { privilege } = useUser();
+    const { privilege, userDetail } = useUser();
 
     const goHome = () => {
         if (privilege?.view_dashboard) {
-            navigate('/TeamProjectAllocation');
+            navigate('/WeeklyManpowerOverview');
         } else {
             navigate('/SubordinateTimelineListing');
         }

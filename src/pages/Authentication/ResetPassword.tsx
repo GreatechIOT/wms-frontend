@@ -82,7 +82,7 @@ export const ResetPassword = (props: any) => {
         if (isMounted) {
             setLoading(true);
             if (getToken() !== null) {
-                navigate('/TeamProjectAllocation');
+                navigate('/WeeklyManpowerOverview');
             } else {
                 setLoading(false);
             }
@@ -94,7 +94,8 @@ export const ResetPassword = (props: any) => {
     }, []);
 
     return (
-        <div className='lg:reactSchedulerOutsideWrapper'
+        <div
+            className="lg:reactSchedulerOutsideWrapper"
             style={{
                 backgroundImage: `url(${backgroundImg})`,
                 backgroundSize: 'cover',
@@ -125,7 +126,7 @@ export const ResetPassword = (props: any) => {
                                 <span className="p-input-icon-left">
                                     <i className="pi pi-envelope"></i>
                                     <InputText
-                                        style={{ color: 'black', background: 'white', border: '1px solid #ccc'  }}
+                                        style={{ color: 'black', background: 'white', border: '1px solid #ccc' }}
                                         id="new_password"
                                         name="new_password"
                                         type="password"
@@ -143,7 +144,7 @@ export const ResetPassword = (props: any) => {
                                 <span className="p-input-icon-left">
                                     <i className="pi pi-key"></i>
                                     <InputText
-                                        style={{ color: 'black', background: 'white', border: '1px solid #ccc'  }}
+                                        style={{ color: 'black', background: 'white', border: '1px solid #ccc' }}
                                         id="confirm_password"
                                         name="confirm_password"
                                         type="password"
